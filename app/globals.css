@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+
+  --surface: #f8fafc;
+  --card: #ffffff;
+  --ink: #0f172a;
+  --ink-muted: #475569;
+  --track: #e2e8f0;
+  --panel: #f1f5f9;
+  --brand-light: #ccfbf1;
+}
+
+/* Paleta oscura: fondo/superficie de app/globals.css. El teal de marca
+   (brand DEFAULT/dark/accent) no cambia entre temas. */
+:root.dark {
+  --surface: #0f172a;
+  --card: #1e293b;
+  --ink: #ffffff;
+  --ink-muted: #94a3b8;
+  --track: #334155;
+  --panel: #1e293b;
+  --brand-light: #134e4a;
+}
+
+/* text-brand/border-brand (#0f766e, #115e59) son deliberadamente oscuros
+   para que el texto blanco de los botones (bg-brand) contraste bien en
+   ambos temas. Como texto/borde suelto sobre fondo oscuro (bg-surface,
+   bg-card, o bg-brand-light oscuros) esos mismos tonos se quedan cortos de
+   contraste (~1.7-3.3:1, por debajo del mínimo 3:1 de WCAG para texto/UI).
+   Se sobreescribe aquí en vez de tocar los ~70 sitios que usan estas
+   utilidades: cada selector es más específico que la utilidad de Tailwind
+   correspondiente, así que gana sin depender del orden de las reglas. */
+:root.dark .text-brand,
+:root.dark .hover\:text-brand:hover,
+:root.dark .group:hover .group-hover\:text-brand,
+:root.dark .active\:text-brand-dark:active {
+  color: #5eead4;
+}
+:root.dark .border-brand,
+:root.dark .focus\:border-brand:focus {
+  border-color: #5eead4;
+}
+:root.dark .focus\:ring-brand:focus {
+  --tw-ring-color: #5eead4;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Respeta el notch y la barra de gestos de iOS/Android */
+  .pt-safe {
+    padding-top: max(env(safe-area-inset-top), 0.75rem);
+  }
+  .pb-safe {
+    padding-bottom: max(env(safe-area-inset-bottom), 0.75rem);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+.animate-slide-in-left {
+  animation: slide-in-left 0.3s ease-out;
+}
+
+@keyframes slide-out-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+.animate-slide-out-left {
+  animation: slide-out-left 0.3s ease-in;
+}
