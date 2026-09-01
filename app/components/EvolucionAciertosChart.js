@@ -11,13 +11,13 @@ import {
   YAxis,
 } from "recharts";
 
-// Paleta categórica para distinguir líneas de especialidad: brand, success,
+// Paleta categórica para distinguir líneas de tema: brand, success,
 // warning, danger y brand.dark de tailwind.config.js, más un amber oscuro
 // como sexto tono (badge.bg/text ahora es gris neutro y se confundiría con
 // la cuadrícula, así que aquí no se reutiliza).
 const COLORES = ["#0f766e", "#22c55e", "#f59e0b", "#CB4644", "#b45309", "#115e59"];
 
-const TODAS = "Todas las especialidades";
+const TODOS = "Todos los temas";
 
 function formatearFechaCorta(iso) {
   return new Date(iso).toLocaleDateString("es-ES", { day: "numeric", month: "short" });
@@ -38,44 +38,42 @@ function TooltipPersonalizado({ active, payload }) {
 }
 
 export default function EvolucionAciertosChart({ sesionesEvolucion }) {
-  // null = "Todas las especialidades" (comportamiento por defecto).
-  const [especialidadActiva, setEspecialidadActiva] = useState(null);
+  // null = "Todos los temas" (comportamiento por defecto).
+  const [temaActivo, setTemaActivo] = useState(null);
 
   if (!sesionesEvolucion || sesionesEvolucion.length === 0) return null;
 
-  // El backend ya entrega, por especialidad, sus propias últimas 10 sesiones
-  // (ROW_NUMBER PARTITION BY especialidad en /api/sesiones/evolucion),
-  // ordenadas ASC por fecha. Aquí solo se agrupan por especialidad.
-  const porEspecialidad = new Map();
+  // El backend ya entrega, por tema, sus propias últimas 10 sesiones
+  // (ROW_NUMBER PARTITION BY tema en /api/sesiones/evolucion), ordenadas
+  // ASC por fecha. Aquí solo se agrupan por tema.
+  const porTema = new Map();
   for (const s of sesionesEvolucion) {
-    const esp = s.especialidad || TODAS;
-    if (!porEspecialidad.has(esp)) porEspecialidad.set(esp, []);
-    porEspecialidad.get(esp).push(s);
+    const t = s.tema || TODOS;
+    if (!porTema.has(t)) porTema.set(t, []);
+    porTema.get(t).push(s);
   }
 
-  const especialidades = [...porEspecialidad.keys()];
+  const temas = [...porTema.keys()];
 
-  const alternarEspecialidad = (esp) => {
-    setEspecialidadActiva((actual) =>
-      esp === TODAS || actual === esp ? null : esp
-    );
+  const alternarTema = (t) => {
+    setTemaActivo((actual) => (t === TODOS || actual === t ? null : t));
   };
 
-  const especialidadVisible = especialidadActiva ?? TODAS;
-  const serieActiva = porEspecialidad.get(especialidadVisible) ?? [];
+  const temaVisible = temaActivo ?? TODOS;
+  const serieActiva = porTema.get(temaVisible) ?? [];
 
   // Eje X por posición relativa (sesión 1, 2, 3...), no por fecha real: cada
-  // especialidad tiene su propia ventana temporal y mezclarlas en un eje de
-  // fechas compartido dejaría el gráfico disperso. La fecha real se conserva
-  // en el tooltip vía fechaCompleta.
+  // tema tiene su propia ventana temporal y mezclarlas en un eje de fechas
+  // compartido dejaría el gráfico disperso. La fecha real se conserva en el
+  // tooltip vía fechaCompleta.
   const datos = serieActiva.map((s, i) => ({
     posicion: i + 1,
-    fechaCompleta: `${formatearFechaCorta(s.fecha)} · ${especialidadVisible}`,
+    fechaCompleta: `${formatearFechaCorta(s.fecha)} · ${temaVisible}`,
     valor: s.porcentaje,
   }));
 
   const datosInsuficientes = datos.length < 2;
-  const colorActivo = COLORES[especialidades.indexOf(especialidadVisible) % COLORES.length];
+  const colorActivo = COLORES[temas.indexOf(temaVisible) % COLORES.length];
 
   return (
     <section className="px-5">
@@ -84,31 +82,31 @@ export default function EvolucionAciertosChart({ sesionesEvolucion }) {
       </h2>
       <div className="rounded-2xl bg-card p-4 shadow-sm">
         <div className="mb-2 flex flex-wrap gap-x-4 gap-y-1">
-          {especialidades.map((esp, i) => {
-            const activa = esp === especialidadVisible;
-            const atenuada = !activa;
+          {temas.map((t, i) => {
+            const activo = t === temaVisible;
+            const atenuado = !activo;
             return (
               <button
-                key={esp}
+                key={t}
                 type="button"
-                onClick={() => alternarEspecialidad(esp)}
+                onClick={() => alternarTema(t)}
                 className={`flex cursor-pointer items-center gap-1.5 rounded-full px-1.5 py-0.5 text-xs font-semibold text-ink-muted transition-opacity ${
-                  atenuada ? "opacity-40" : "opacity-100"
-                } ${activa ? "ring-1 ring-inset ring-[var(--track)]" : ""}`}
+                  atenuado ? "opacity-40" : "opacity-100"
+                } ${activo ? "ring-1 ring-inset ring-[var(--track)]" : ""}`}
               >
                 <span
                   className="h-2 w-2 rounded-full"
                   style={{ backgroundColor: COLORES[i % COLORES.length] }}
                 />
-                {esp}
+                {t}
               </button>
             );
           })}
         </div>
         {datosInsuficientes ? (
           <div className="flex h-[220px] items-center justify-center px-6 text-center text-sm font-semibold text-ink-muted">
-            {especialidadActiva
-              ? `Necesitas al menos 2 sesiones de ${especialidadActiva} para ver su evolución. Llevas ${datos.length}.`
+            {temaActivo
+              ? `Necesitas al menos 2 sesiones de ${temaActivo} para ver su evolución. Llevas ${datos.length}.`
               : `Necesitas al menos 2 sesiones para ver tu evolución. Llevas ${datos.length}.`}
           </div>
         ) : (

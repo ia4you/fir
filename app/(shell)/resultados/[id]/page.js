@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import SpecialtyProgressRow from "../../../components/SpecialtyProgressRow";
+import TemaProgressRow from "../../../components/TemaProgressRow";
 
 export default function Resultados({ params }) {
   const router = useRouter();
@@ -57,7 +57,7 @@ export default function Resultados({ params }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           modo: "repaso",
-          especialidad: null,
+          tema: null,
           total_preguntas: preguntas.length,
         }),
       });
@@ -180,17 +180,17 @@ export default function Resultados({ params }) {
         </section>
       )}
 
-      {datos.desglose_especialidad.length > 0 && (
+      {datos.desglose_tema.length > 0 && (
         <section className="mt-6 px-5">
           <h2 className="mb-1 text-sm font-bold uppercase tracking-wide text-ink-muted">
-            Por especialidad
+            Por tema
           </h2>
           <div className="divide-y divide-track">
-            {datos.desglose_especialidad.map((e) => (
-              <SpecialtyProgressRow
-                key={e.especialidad}
-                nombre={e.especialidad}
-                porcentaje={e.porcentaje}
+            {datos.desglose_tema.map((t) => (
+              <TemaProgressRow
+                key={t.tema}
+                nombre={t.tema}
+                porcentaje={t.porcentaje}
                 variante="plain"
               />
             ))}

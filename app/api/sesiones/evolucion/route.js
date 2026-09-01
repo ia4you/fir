@@ -5,12 +5,12 @@ import { query } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-// Ventana por especialidad (no global): para el gráfico de evolución de
-// aciertos, cada especialidad necesita sus propias últimas 10 sesiones, no
-// las últimas 10 sesiones del usuario mezclando especialidades — si no, una
-// especialidad con histórico abundante pero poco reciente queda enterrada
-// por sesiones de otras especialidades más nuevas. PARTITION BY especialidad
-// agrupa los NULL ("Todas las especialidades") entre sí igual que un GROUP BY.
+// Ventana por tema (no global): para el gráfico de evolución de aciertos,
+// cada tema necesita sus propias últimas 10 sesiones, no las últimas 10
+// sesiones del usuario mezclando temas — si no, un tema con histórico
+// abundante pero poco reciente queda enterrado por sesiones de otros temas
+// más nuevas. PARTITION BY tema agrupa los NULL ("Todos los temas") entre
+// sí igual que un GROUP BY.
 export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session) {
@@ -20,15 +20,15 @@ export async function GET() {
   try {
     const { rows } = await query(
       `WITH ranked AS (
-         SELECT id, fecha, especialidad, total_preguntas, aciertos,
+         SELECT id, fecha, tema, total_preguntas, aciertos,
                 ROW_NUMBER() OVER (
-                  PARTITION BY especialidad
+                  PARTITION BY tema
                   ORDER BY fecha DESC
                 ) AS rn
          FROM sesiones
          WHERE duracion_segundos IS NOT NULL AND user_id = $1
        )
-       SELECT id, fecha, especialidad, total_preguntas, aciertos
+       SELECT id, fecha, tema, total_preguntas, aciertos
        FROM ranked
        WHERE rn <= 10
        ORDER BY fecha ASC`,
@@ -38,7 +38,7 @@ export async function GET() {
       rows.map((r) => ({
         id: r.id,
         fecha: r.fecha,
-        especialidad: r.especialidad,
+        tema: r.tema,
         total_preguntas: r.total_preguntas,
         aciertos: r.aciertos,
         porcentaje: r.total_preguntas > 0 ? Math.round((r.aciertos / r.total_preguntas) * 100) : 0,

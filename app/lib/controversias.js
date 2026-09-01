@@ -4,7 +4,7 @@ import { query } from "../../lib/db";
 
 const FILE_PATH = path.join(process.cwd(), "preguntas_controvertidas.md");
 const CAMPOS =
-  "id, año, numero, especialidad, pregunta, opcion_a, opcion_b, opcion_c, opcion_d, opcion_e, correcta";
+  "id, año, numero, pregunta, opcion_a, opcion_b, opcion_c, opcion_d, opcion_e, correcta";
 
 function limpiar(texto) {
   return texto.replace(/\s+/g, " ").trim();

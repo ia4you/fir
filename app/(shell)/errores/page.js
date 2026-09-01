@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import BottomNav from "../../components/BottomNav";
 
-async function iniciarRepaso({ router, ids, especialidad, onError }) {
+async function iniciarRepaso({ router, ids, tema, onError }) {
   try {
     const resPreguntas = await fetch(`/api/preguntas?ids=${ids.join(",")}`);
     if (!resPreguntas.ok) throw new Error("preguntas");
@@ -17,7 +17,7 @@ async function iniciarRepaso({ router, ids, especialidad, onError }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         modo: "repaso_errores",
-        especialidad: especialidad || null,
+        tema: tema || null,
         total_preguntas: preguntas.length,
       }),
     });
@@ -44,7 +44,7 @@ export default function MisErrores() {
   const router = useRouter();
   const [datos, setDatos] = useState(null);
   const [error, setError] = useState(false);
-  const [repasando, setRepasando] = useState(null); // null | "todos" | especialidad
+  const [repasando, setRepasando] = useState(null); // null | "todos" | tema
   const [errorRepaso, setErrorRepaso] = useState("");
 
   useEffect(() => {
@@ -54,14 +54,14 @@ export default function MisErrores() {
       .catch(() => setError(true));
   }, []);
 
-  function repasar(ids, especialidad, clave) {
+  function repasar(ids, tema, clave) {
     if (ids.length === 0 || repasando) return;
     setErrorRepaso("");
     setRepasando(clave);
     iniciarRepaso({
       router,
       ids,
-      especialidad,
+      tema,
       onError: (msg) => {
         setErrorRepaso(msg);
         setRepasando(null);
@@ -133,10 +133,10 @@ export default function MisErrores() {
 
             <div className="mt-6 flex flex-col gap-5">
               {datos.grupos.map((g) => (
-                <section key={g.especialidad}>
+                <section key={g.tema}>
                   <div className="mb-2 flex items-center justify-between">
                     <h2 className="text-sm font-bold uppercase tracking-wide text-ink-muted">
-                      {g.especialidad}
+                      {g.tema}
                     </h2>
                     <span className="text-xs font-semibold text-ink-muted">
                       {g.total_preguntas} {g.total_preguntas === 1 ? "pregunta" : "preguntas"}
@@ -145,7 +145,7 @@ export default function MisErrores() {
 
                   {g.patron && (
                     <div className="mb-3 rounded-xl bg-warning-bg p-3 text-xs font-semibold text-warning-text">
-                      ⚠️ Has fallado {g.total_preguntas} preguntas relacionadas con {g.especialidad}.
+                      ⚠️ Has fallado {g.total_preguntas} preguntas relacionadas con {g.tema}.
                     </div>
                   )}
 
@@ -172,14 +172,14 @@ export default function MisErrores() {
                     <button
                       type="button"
                       onClick={() =>
-                        repasar(g.preguntas.map((p) => p.id), g.especialidad, g.especialidad)
+                        repasar(g.preguntas.map((p) => p.id), g.tema, g.tema)
                       }
                       disabled={repasando !== null}
                       className="mt-1 h-11 w-full rounded-xl border-2 border-brand text-sm font-bold text-brand disabled:border-track disabled:text-ink-muted"
                     >
-                      {repasando === g.especialidad
+                      {repasando === g.tema
                         ? "Preparando…"
-                        : `Repasar ${g.especialidad} →`}
+                        : `Repasar ${g.tema} →`}
                     </button>
                   </div>
                 </section>

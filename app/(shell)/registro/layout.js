@@ -1,4 +1,4 @@
-import { getTotalPreguntasYEspecialidades } from "../../lib/especialidades";
+import { getTotalPreguntas } from "../../lib/preguntas";
 
 // generateMetadata consulta la BD (total de preguntas): sin esto, Next
 // intentaría prerenderizar el metadata en build time y el build de Dokploy
@@ -6,7 +6,7 @@ import { getTotalPreguntasYEspecialidades } from "../../lib/especialidades";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
-  const { totalPreguntas } = await getTotalPreguntasYEspecialidades();
+  const totalPreguntas = await getTotalPreguntas();
 
   const description =
     totalPreguntas > 0

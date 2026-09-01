@@ -24,7 +24,6 @@ CREATE TABLE public.preguntas (
     id integer NOT NULL,
     "año" integer NOT NULL,
     numero integer NOT NULL,
-    especialidad character varying(100),
     pregunta text NOT NULL,
     opcion_a text NOT NULL,
     opcion_b text NOT NULL,
@@ -72,7 +71,7 @@ CREATE TABLE public.sesiones (
     id integer NOT NULL,
     fecha timestamp without time zone DEFAULT now(),
     modo character varying(50) NOT NULL,
-    especialidad character varying(100),
+    tema character varying(100),
     total_preguntas integer NOT NULL,
     aciertos integer NOT NULL,
     duracion_segundos integer,
@@ -246,7 +245,6 @@ ALTER TABLE ONLY public.sesiones ADD CONSTRAINT sesiones_user_id_fkey FOREIGN KE
 -- Indexes
 --
 CREATE INDEX idx_preguntas_anio ON public.preguntas USING btree ("año");
-CREATE INDEX idx_preguntas_especialidad ON public.preguntas USING btree (especialidad);
 CREATE INDEX idx_respuestas_sesion ON public.respuestas_sesion USING btree (sesion_id);
 CREATE INDEX idx_visitas_created_at ON public.visitas USING btree (created_at);
 CREATE INDEX idx_visitas_fecha ON public.visitas USING btree (fecha);

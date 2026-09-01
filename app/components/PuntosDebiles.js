@@ -8,13 +8,13 @@ import { entrenarConCriterios } from "../lib/entrenarPuntosDebiles";
 const MIN_RESPUESTAS_PARA_CONTAR = 5;
 const TOTAL_PREGUNTAS_ENTRENAMIENTO = 20;
 
-export default function PuntosDebiles({ especialidades }) {
+export default function PuntosDebiles({ temas }) {
   const router = useRouter();
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState("");
 
-  const debiles = especialidades
-    .filter((e) => e.total >= MIN_RESPUESTAS_PARA_CONTAR)
+  const debiles = temas
+    .filter((t) => t.total >= MIN_RESPUESTAS_PARA_CONTAR)
     .sort((a, b) => a.porcentaje - b.porcentaje || b.total - a.total)
     .slice(0, 5);
 
@@ -24,7 +24,7 @@ export default function PuntosDebiles({ especialidades }) {
     setCargando(true);
     try {
       const resultado = await entrenarConCriterios({
-        especialidades: debiles.map((e) => e.especialidad),
+        temas: debiles.map((t) => t.tema),
         cantidad: TOTAL_PREGUNTAS_ENTRENAMIENTO,
         router,
       });
@@ -48,18 +48,18 @@ export default function PuntosDebiles({ especialidades }) {
 
       {debiles.length === 0 ? (
         <div className="rounded-2xl bg-card p-4 text-sm text-ink-muted shadow-sm">
-          Responde al menos {MIN_RESPUESTAS_PARA_CONTAR} preguntas de una especialidad para que
+          Responde al menos {MIN_RESPUESTAS_PARA_CONTAR} preguntas de un tema para que
           detectemos tus puntos débiles.
         </div>
       ) : (
         <div className="rounded-2xl bg-card p-4 shadow-sm">
           <ul className="flex flex-col divide-y divide-track">
-            {debiles.map((e, i) => (
-              <li key={e.especialidad} className="flex items-center justify-between py-2.5">
+            {debiles.map((t, i) => (
+              <li key={t.tema} className="flex items-center justify-between py-2.5">
                 <span className="font-semibold text-ink">
-                  {i + 1}. {e.especialidad}
+                  {i + 1}. {t.tema}
                 </span>
-                <span className="font-bold text-danger">{e.porcentaje}%</span>
+                <span className="font-bold text-danger">{t.porcentaje}%</span>
               </li>
             ))}
           </ul>

@@ -5,8 +5,8 @@ import { query } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-// Con al menos este número de preguntas falladas distintas en una misma
-// especialidad, se muestra el aviso de patrón ("Has fallado X preguntas
+// Con al menos este número de preguntas falladas distintas en un mismo
+// tema, se muestra el aviso de patrón ("Has fallado X preguntas
 // relacionadas con..."). Mismo umbral que "puntos débiles" en /estadisticas
 // para mantener el criterio consistente en toda la app.
 const MIN_PREGUNTAS_PATRON = 3;
@@ -22,23 +22,23 @@ export async function GET() {
     // Una fila por pregunta fallada al menos una vez, con el número total de
     // veces que se ha fallado (puede haberse respondido en varias sesiones).
     const { rows } = await query(
-      `SELECT p.id, p.especialidad, p.pregunta, p.año, p.numero,
+      `SELECT p.id, p.tema, p.pregunta, p.año, p.numero,
               COUNT(*)::int AS veces_fallada
        FROM respuestas_sesion rs
        JOIN preguntas p ON p.id = rs.pregunta_id
        WHERE rs.user_id = $1 AND rs.correcta = false
-       GROUP BY p.id, p.especialidad, p.pregunta, p.año, p.numero
-       ORDER BY p.especialidad ASC NULLS LAST, veces_fallada DESC, p.id ASC`,
+       GROUP BY p.id, p.tema, p.pregunta, p.año, p.numero
+       ORDER BY p.tema ASC NULLS LAST, veces_fallada DESC, p.id ASC`,
       [userId]
     );
 
-    const gruposPorEspecialidad = new Map();
+    const gruposPorTema = new Map();
     for (const r of rows) {
-      const clave = r.especialidad || "Sin especialidad";
-      if (!gruposPorEspecialidad.has(clave)) {
-        gruposPorEspecialidad.set(clave, []);
+      const clave = r.tema || "Sin tema";
+      if (!gruposPorTema.has(clave)) {
+        gruposPorTema.set(clave, []);
       }
-      gruposPorEspecialidad.get(clave).push({
+      gruposPorTema.get(clave).push({
         id: r.id,
         pregunta: r.pregunta,
         anio: r.año,
@@ -48,9 +48,9 @@ export async function GET() {
       });
     }
 
-    const grupos = [...gruposPorEspecialidad.entries()]
-      .map(([especialidad, preguntas]) => ({
-        especialidad,
+    const grupos = [...gruposPorTema.entries()]
+      .map(([tema, preguntas]) => ({
+        tema,
         total_preguntas: preguntas.length,
         total_fallos: preguntas.reduce((acc, p) => acc + p.veces_fallada, 0),
         patron: preguntas.length >= MIN_PREGUNTAS_PATRON,
@@ -59,7 +59,7 @@ export async function GET() {
       .sort(
         (a, b) =>
           b.total_fallos - a.total_fallos ||
-          a.especialidad.localeCompare(b.especialidad, "es")
+          a.tema.localeCompare(b.tema, "es")
       );
 
     return NextResponse.json({

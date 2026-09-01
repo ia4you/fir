@@ -8,7 +8,6 @@ import Footer from "../../components/Footer";
 
 const FILAS_COMPARATIVA = [
   { caracteristica: "Preguntas por día", free: "10", premium: "∞" },
-  { caracteristica: "Acceso a especialidades", free: "Todas", premium: "Todas" },
   { caracteristica: "Historial y estadísticas", free: true, premium: true },
   { caracteristica: "Repaso de fallos", free: true, premium: true },
   { caracteristica: "Simulacro completo", free: false, premium: true },

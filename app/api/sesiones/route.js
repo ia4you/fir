@@ -17,7 +17,7 @@ export async function GET() {
 
   try {
     const { rows } = await query(
-      `SELECT id, fecha, modo, especialidad, total_preguntas, aciertos, duracion_segundos
+      `SELECT id, fecha, modo, tema, total_preguntas, aciertos, duracion_segundos
        FROM sesiones
        WHERE duracion_segundos IS NOT NULL AND user_id = $1
        ORDER BY fecha DESC
@@ -29,7 +29,7 @@ export async function GET() {
         id: r.id,
         fecha: r.fecha,
         modo: r.modo,
-        especialidad: r.especialidad,
+        tema: r.tema,
         total_preguntas: r.total_preguntas,
         aciertos: r.aciertos,
         porcentaje: r.total_preguntas > 0 ? Math.round((r.aciertos / r.total_preguntas) * 100) : 0,
@@ -56,7 +56,7 @@ export async function POST(request) {
     );
   }
 
-  const { modo, especialidad = null, total_preguntas } = body;
+  const { modo, tema = null, total_preguntas } = body;
   const userId = session.user.id;
 
   try {
@@ -94,10 +94,10 @@ export async function POST(request) {
     }
 
     const { rows } = await query(
-      `INSERT INTO sesiones (modo, especialidad, total_preguntas, aciertos, user_id)
+      `INSERT INTO sesiones (modo, tema, total_preguntas, aciertos, user_id)
        VALUES ($1, $2, $3, 0, $4)
        RETURNING id`,
-      [modo, especialidad, total_preguntas, userId]
+      [modo, tema, total_preguntas, userId]
     );
     return NextResponse.json({ id: rows[0].id }, { status: 201 });
   } catch (err) {

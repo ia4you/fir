@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { query } from "@/lib/db";
 import { imagenDePost } from "@/lib/blog";
-import { getTotalPreguntasYEspecialidades } from "../../lib/especialidades";
+import { getTotalPreguntas } from "../../lib/preguntas";
 import BlogHeader from "../../components/BlogHeader";
 import BlogImagen from "../../components/BlogImagen";
 import Footer from "../../components/Footer";
@@ -60,9 +60,9 @@ export default async function BlogPost({ params }) {
   const post = await getPost(params.slug);
   if (!post) notFound();
 
-  const [ultimos, { totalPreguntas }] = await Promise.all([
+  const [ultimos, totalPreguntas] = await Promise.all([
     getUltimosPosts(params.slug),
-    getTotalPreguntasYEspecialidades(),
+    getTotalPreguntas(),
   ]);
   const imagenHero = post.imagen_portada;
   const textoCta =

@@ -1,19 +1,16 @@
 import Link from "next/link";
-import {
-  getEspecialidadesConConteo,
-  getTotalPreguntasYEspecialidades,
-} from "./lib/especialidades";
+import { getTotalPreguntas } from "./lib/preguntas";
 import Logo from "./components/Logo";
 import ScrollToHash from "./components/ScrollToHash";
 import Footer from "./components/Footer";
 
 export async function generateMetadata() {
-  const { totalPreguntas } = await getTotalPreguntasYEspecialidades();
+  const totalPreguntas = await getTotalPreguntas();
   const hayDatos = totalPreguntas > 0;
 
   const description = hayDatos
-    ? `Prepara el PIR con ${totalPreguntas.toLocaleString("es-ES")} preguntas oficiales verificadas de Sanidad. Practica por especialidades, simulacros y repasa tus fallos gratis.`
-    : "Prepara el PIR con preguntas oficiales de convocatorias anteriores, verificadas de Sanidad. Practica por especialidades, simulacros y repasa tus fallos gratis.";
+    ? `Prepara el PIR con ${totalPreguntas.toLocaleString("es-ES")} preguntas oficiales verificadas de Sanidad. Practica por tema, simulacros y repasa tus fallos gratis.`
+    : "Prepara el PIR con preguntas oficiales de convocatorias anteriores, verificadas de Sanidad. Practica por tema, simulacros y repasa tus fallos gratis.";
 
   const descriptionOg = hayDatos
     ? `${totalPreguntas.toLocaleString("es-ES")} preguntas reales verificadas. Gratis.`
@@ -45,8 +42,8 @@ export const dynamic = "force-dynamic";
 
 const PASOS = [
   {
-    titulo: "Elige especialidad o año",
-    texto: "Practica por bloque temático o repasa una convocatoria completa.",
+    titulo: "Elige tema o año",
+    texto: "Practica por tema o repasa una convocatoria completa.",
     icono: (props) => (
       <svg viewBox="0 0 24 24" fill="none" strokeWidth={2} stroke="currentColor" {...props}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 5.5c2-1 5-1 8 0v14c-3-1-6-1-8 0v-14Z" />
@@ -64,7 +61,7 @@ const PASOS = [
     ),
   },
   {
-    titulo: "Ve tu progreso por especialidad",
+    titulo: "Ve tu progreso por tema",
     texto: "Detecta tus puntos débiles y enfoca el repaso donde más falta hace.",
     icono: (props) => (
       <svg viewBox="0 0 24 24" fill="none" strokeWidth={2} stroke="currentColor" {...props}>
@@ -76,7 +73,7 @@ const PASOS = [
 
 const BENEFICIOS = [
   {
-    texto: "Repasa por especialidad y detecta tus puntos débiles antes del examen.",
+    texto: "Repasa por tema y detecta tus puntos débiles antes del examen.",
     icono: (props) => (
       <svg viewBox="0 0 24 24" fill="none" strokeWidth={2} stroke="currentColor" {...props}>
         <circle cx="12" cy="12" r="8" />
@@ -105,10 +102,7 @@ const BENEFICIOS = [
 ];
 
 export default async function LandingPage() {
-  const [especialidades, { totalPreguntas, totalEspecialidades }] = await Promise.all([
-    getEspecialidadesConConteo(),
-    getTotalPreguntasYEspecialidades(),
-  ]);
+  const totalPreguntas = await getTotalPreguntas();
   const hayDatos = totalPreguntas > 0;
 
   const schemaOrganizacion = {
@@ -128,7 +122,7 @@ export default async function LandingPage() {
   };
 
   const textoHero = hayDatos
-    ? `${totalPreguntas.toLocaleString("es-ES")} preguntas reales · ${totalEspecialidades} especialidades · Respuestas oficiales de las plantillas del Ministerio de Sanidad`
+    ? `${totalPreguntas.toLocaleString("es-ES")} preguntas reales · Respuestas oficiales de las plantillas del Ministerio de Sanidad`
     : "Preguntas oficiales reales de convocatorias anteriores · Respuestas oficiales de las plantillas del Ministerio de Sanidad";
 
   return (
@@ -206,22 +200,6 @@ export default async function LandingPage() {
               <h3 className="mt-1 text-lg font-bold text-ink">{paso.titulo}</h3>
               <p className="mt-1 text-sm text-ink-muted">{paso.texto}</p>
             </div>
-          ))}
-        </div>
-      </section>
-
-      <section id="especialidades" className="px-5 py-12 sm:py-16">
-        <h2 className="text-center text-2xl font-extrabold text-ink">Especialidades</h2>
-        <div className="mx-auto mt-8 grid max-w-5xl gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {especialidades.map((e) => (
-            <Link
-              key={e.slug}
-              href={`/especialidades/${e.slug}`}
-              className="flex flex-col justify-between rounded-2xl bg-card p-4 shadow-sm active:bg-brand-light"
-            >
-              <span className="font-bold text-ink">{e.nombre}</span>
-              <span className="mt-1 text-sm text-ink-muted">{e.total} preguntas</span>
-            </Link>
           ))}
         </div>
       </section>

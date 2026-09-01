@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import AvatarUploader from "../../components/AvatarUploader";
 import BottomNav from "../../components/BottomNav";
 import ResumenDiario from "../../components/ResumenDiario";
-import SpecialtyProgressRow from "../../components/SpecialtyProgressRow";
+import TemaProgressRow from "../../components/TemaProgressRow";
 import PushBanner from "../../components/PushBanner";
 import { getMetaDiaria } from "../../lib/preferencias";
 
@@ -74,7 +74,7 @@ export default function Inicio() {
 
       {session?.user?.plan !== "premium" &&
         datos &&
-        datos.especialidades.every((e) => e.total === 0) && (
+        datos.temas.every((t) => t.total === 0) && (
           <div className="mx-5 mt-4 rounded-2xl bg-brand-light p-4">
             <p className="text-sm font-semibold text-ink">
               Estás en el plan gratuito — puedes responder hasta 10 preguntas al día.
@@ -105,7 +105,7 @@ export default function Inicio() {
 
       <section className="mt-7 px-5">
         <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-ink-muted">
-          Especialidades
+          Temas
         </h2>
 
         {error && (
@@ -114,14 +114,14 @@ export default function Inicio() {
           </p>
         )}
 
-        {!error && datos && datos.especialidades.length > 0 && (
+        {!error && datos && datos.temas.length > 0 && (
           <div className="flex flex-col gap-3">
-            {datos.especialidades.map((e) => (
-              <SpecialtyProgressRow
-                key={e.especialidad}
-                nombre={e.especialidad}
-                porcentaje={e.porcentaje}
-                total={e.total}
+            {datos.temas.map((t) => (
+              <TemaProgressRow
+                key={t.tema}
+                nombre={t.tema}
+                porcentaje={t.porcentaje}
+                total={t.total}
               />
             ))}
           </div>

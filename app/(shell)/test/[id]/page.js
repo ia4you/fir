@@ -323,7 +323,7 @@ export default function TestPregunta({ params }) {
         }`}
       >
         <span className="inline-block rounded-full bg-badge-bg px-3 py-1 text-sm font-bold text-badge-text">
-          {preguntaActual.especialidad}
+          {preguntaActual.tema}
         </span>
 
         <p className="mt-3 text-lg font-medium text-ink">{preguntaActual.pregunta}</p>

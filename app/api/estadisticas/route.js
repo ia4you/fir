@@ -10,8 +10,8 @@ export const dynamic = "force-dynamic";
 // como ?meta=N; 20 es solo el valor por defecto si no se indica.
 const META_DIARIA_POR_DEFECTO = 20;
 
-// Con menos respuestas que esto en una especialidad no hay datos suficientes
-// para partir en "mitad antigua / mitad reciente" y calcular una tendencia fiable.
+// Con menos respuestas que esto en un tema no hay datos suficientes para
+// partir en "mitad antigua / mitad reciente" y calcular una tendencia fiable.
 const MIN_RESPUESTAS_TENDENCIA = 4;
 // Diferencia mínima (en proporción, 0-1) entre la mitad reciente y la
 // antigua para considerar que hay una tendencia real y no ruido.
@@ -61,40 +61,40 @@ export async function GET(request) {
       Math.round((respondidasHoy / metaDiariaPreguntas) * 100)
     );
 
-    // Partimos de TODAS las especialidades (no solo las ya practicadas) para
-    // que el usuario vea el mapa completo desde el primer día, con 0% en las
-    // que todavía no ha tocado. La tendencia compara la mitad más reciente de
-    // respuestas de cada especialidad (por fecha de sesión) contra la mitad
-    // más antigua.
-    const especialidadesRes = await query(
+    // Partimos de TODOS los temas (no solo los ya practicados) para que el
+    // usuario vea el mapa completo desde el primer día, con 0% en los que
+    // todavía no ha tocado. La tendencia compara la mitad más reciente de
+    // respuestas de cada tema (por fecha de sesión) contra la mitad más
+    // antigua.
+    const temasRes = await query(
       `WITH respuestas_ordenadas AS (
-         SELECT p.especialidad,
+         SELECT p.tema,
                 rs.correcta,
-                ROW_NUMBER() OVER (PARTITION BY p.especialidad ORDER BY s.fecha ASC, rs.id ASC) AS orden,
-                COUNT(*) OVER (PARTITION BY p.especialidad) AS total_respuestas
+                ROW_NUMBER() OVER (PARTITION BY p.tema ORDER BY s.fecha ASC, rs.id ASC) AS orden,
+                COUNT(*) OVER (PARTITION BY p.tema) AS total_respuestas
          FROM respuestas_sesion rs
          JOIN sesiones s ON s.id = rs.sesion_id
          JOIN preguntas p ON p.id = rs.pregunta_id
          WHERE rs.user_id = $1
        ),
-       tendencia_especialidad AS (
-         SELECT especialidad,
+       tendencia_tema AS (
+         SELECT tema,
                 AVG(CASE WHEN orden <= total_respuestas / 2.0 THEN correcta::int END) AS pct_antigua,
                 AVG(CASE WHEN orden > total_respuestas / 2.0 THEN correcta::int END) AS pct_reciente
          FROM respuestas_ordenadas
-         GROUP BY especialidad
+         GROUP BY tema
        )
-       SELECT esp.especialidad,
+       SELECT tm.tema,
               COUNT(rs.id)::int AS total,
               COUNT(*) FILTER (WHERE rs.correcta)::int AS aciertos,
               t.pct_antigua,
               t.pct_reciente
-       FROM (SELECT DISTINCT especialidad FROM preguntas) esp
-       LEFT JOIN preguntas p ON p.especialidad = esp.especialidad
+       FROM (SELECT DISTINCT tema FROM preguntas) tm
+       LEFT JOIN preguntas p ON p.tema IS NOT DISTINCT FROM tm.tema
        LEFT JOIN respuestas_sesion rs ON rs.pregunta_id = p.id AND rs.user_id = $1
-       LEFT JOIN tendencia_especialidad t ON t.especialidad = esp.especialidad
-       GROUP BY esp.especialidad, t.pct_antigua, t.pct_reciente
-       ORDER BY total DESC, esp.especialidad ASC`,
+       LEFT JOIN tendencia_tema t ON t.tema IS NOT DISTINCT FROM tm.tema
+       GROUP BY tm.tema, t.pct_antigua, t.pct_reciente
+       ORDER BY total DESC, tm.tema ASC`,
       [userId]
     );
 
@@ -105,7 +105,7 @@ export async function GET(request) {
         respondidas_hoy: respondidasHoy,
         porcentaje: metaDiariaPct,
       },
-      especialidades: especialidadesRes.rows.map((r) => {
+      temas: temasRes.rows.map((r) => {
         const total = r.total;
         const aciertos = r.aciertos;
         let tendencia = "flat";
@@ -115,7 +115,7 @@ export async function GET(request) {
           else if (diff <= -UMBRAL_TENDENCIA) tendencia = "down";
         }
         return {
-          especialidad: r.especialidad,
+          tema: r.tema,
           total,
           aciertos,
           porcentaje: total > 0 ? Math.round((aciertos / total) * 100) : 0,

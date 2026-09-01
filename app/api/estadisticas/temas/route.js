@@ -18,21 +18,19 @@ export async function GET() {
 
   try {
     const temasRes = await query(
-      `SELECT p.especialidad,
-              p.tema,
+      `SELECT p.tema,
               COUNT(*)::int AS total,
               COUNT(*) FILTER (WHERE rs.correcta)::int AS aciertos
        FROM respuestas_sesion rs
        JOIN preguntas p ON p.id = rs.pregunta_id
        WHERE rs.user_id = $1 AND p.tema IS NOT NULL
-       GROUP BY p.especialidad, p.tema
+       GROUP BY p.tema
        ORDER BY (COUNT(*) FILTER (WHERE rs.correcta))::float / COUNT(*) ASC`,
       [userId]
     );
 
     return NextResponse.json({
       temas: temasRes.rows.map((r) => ({
-        especialidad: r.especialidad,
         tema: r.tema,
         total: r.total,
         aciertos: r.aciertos,

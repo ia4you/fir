@@ -26,7 +26,7 @@ export async function GET(request, { params }) {
 
   try {
     const sesionRes = await query(
-      `SELECT id, modo, especialidad, total_preguntas, aciertos, duracion_segundos, user_id
+      `SELECT id, modo, tema, total_preguntas, aciertos, duracion_segundos, user_id
        FROM sesiones WHERE id = $1`,
       [sesionId]
     );
@@ -39,18 +39,18 @@ export async function GET(request, { params }) {
     }
 
     const desgloseRes = await query(
-      `SELECT p.especialidad,
+      `SELECT p.tema,
               COUNT(*)::int AS total,
               COUNT(*) FILTER (WHERE rs.correcta)::int AS aciertos
        FROM respuestas_sesion rs
        JOIN preguntas p ON p.id = rs.pregunta_id
        WHERE rs.sesion_id = $1
-       GROUP BY p.especialidad`,
+       GROUP BY p.tema`,
       [sesionId]
     );
 
     const desglose = desgloseRes.rows.map((r) => ({
-      especialidad: r.especialidad,
+      tema: r.tema,
       total: r.total,
       aciertos: r.aciertos,
       porcentaje: r.total > 0 ? Math.round((r.aciertos / r.total) * 1000) / 10 : 0,
@@ -139,8 +139,8 @@ export async function GET(request, { params }) {
       puntuacion: `${sesion.aciertos}/${sesion.total_preguntas}`,
       tiempoTotalSeg: sesion.duracion_segundos,
       etiquetas: {
-        fuertes: fuertes.map((f) => f.especialidad),
-        debiles: debiles.map((d) => d.especialidad),
+        fuertes: fuertes.map((f) => f.tema),
+        debiles: debiles.map((d) => d.tema),
         posibleDesactualizacion,
       },
       desgloseFallos: {

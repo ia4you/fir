@@ -100,8 +100,8 @@ export default function DemoClient({ totalPreguntas }) {
 
   const textoCta =
     totalPreguntas > 0
-      ? `Regístrate gratis para acceder a las ${totalPreguntas.toLocaleString("es-ES")} preguntas, seguir tu progreso y practicar por especialidad.`
-      : "Regístrate gratis para acceder a todas las preguntas, seguir tu progreso y practicar por especialidad.";
+      ? `Regístrate gratis para acceder a las ${totalPreguntas.toLocaleString("es-ES")} preguntas, seguir tu progreso y practicar por tema.`
+      : "Regístrate gratis para acceder a todas las preguntas, seguir tu progreso y practicar por tema.";
 
   const cta = (
     <div className="flex flex-col items-center gap-3 text-center">
@@ -151,7 +151,7 @@ export default function DemoClient({ totalPreguntas }) {
         }`}
       >
         <span className="inline-block rounded-full bg-badge-bg px-3 py-1 text-sm font-bold text-badge-text">
-          {preguntaActual.especialidad}
+          {preguntaActual.tema}
         </span>
 
         <p className="mt-3 text-lg font-medium text-ink">{preguntaActual.pregunta}</p>

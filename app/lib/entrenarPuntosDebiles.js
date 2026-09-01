@@ -1,8 +1,8 @@
 // Genera un test personalizado ("puntos débiles") a partir de una lista de
-// especialidades y/o temas: pide las preguntas, crea la sesión, guarda las
-// preguntas en sessionStorage para /test/[id] y navega hasta allí. Extraído
-// de PuntosDebiles.js para poder reutilizarlo también en el entrenamiento
-// por tema.
+// temas: pide las preguntas, crea la sesión, guarda las preguntas en
+// sessionStorage para /test/[id] y navega hasta allí. Extraído de
+// PuntosDebiles.js para poder reutilizarlo también en el entrenamiento
+// desde ListaTemas.js.
 //
 // Devuelve { ok: true } tras navegar, o { limiteAlcanzado: true, message }
 // si el usuario ha topado con su límite diario (403) — en ambos casos sin
@@ -12,13 +12,11 @@
 const TOTAL_PREGUNTAS_POR_DEFECTO = 20;
 
 export async function entrenarConCriterios({
-  especialidades = [],
   temas = [],
   cantidad = TOTAL_PREGUNTAS_POR_DEFECTO,
   router,
 }) {
   const params = new URLSearchParams();
-  if (especialidades.length > 0) params.set("especialidades", especialidades.join(","));
   if (temas.length > 0) params.set("temas", temas.join(","));
   params.set("cantidad", String(cantidad));
 
@@ -32,7 +30,7 @@ export async function entrenarConCriterios({
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       modo: "puntos_debiles",
-      especialidad: null,
+      tema: null,
       total_preguntas: preguntas.length,
     }),
   });

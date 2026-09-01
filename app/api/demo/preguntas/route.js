@@ -9,8 +9,8 @@ const CANTIDAD_DEFECTO = 6;
 // incluida) sin registrarse.
 const CANTIDAD_MAXIMA = 10;
 
-// Devuelve preguntas de la demo pública, una por especialidad distinta (para
-// que las 6 preguntas se sientan representativas del banco completo), con la
+// Devuelve preguntas de la demo pública, una por tema distinto (para que
+// las 6 preguntas se sientan representativas del banco completo), con la
 // respuesta correcta y la explicación incluidas: al no haber sesión que
 // corregir después, la demo enseña el valor completo en la propia petición.
 export async function GET(request) {
@@ -22,10 +22,10 @@ export async function GET(request) {
 
   try {
     const { rows } = await query(
-      `SELECT id, especialidad, pregunta, opcion_a, opcion_b, opcion_c, opcion_d, opcion_e,
+      `SELECT id, tema, pregunta, opcion_a, opcion_b, opcion_c, opcion_d, opcion_e,
               imagen_path, correcta, explicacion, explicacion_calidad
        FROM (
-         SELECT *, ROW_NUMBER() OVER (PARTITION BY especialidad ORDER BY RANDOM()) AS rn
+         SELECT *, ROW_NUMBER() OVER (PARTITION BY tema ORDER BY RANDOM()) AS rn
          FROM preguntas
        ) sub
        WHERE rn = 1

@@ -44,7 +44,7 @@ export default function PrivacidadPage() {
               <li>
                 <span className="font-semibold text-ink">Progreso de estudio:</span> las
                 preguntas que respondes, tus aciertos y fallos, el tiempo por sesión y tus
-                estadísticas por especialidad.
+                estadísticas por tema.
               </li>
               <li>
                 <span className="font-semibold text-ink">Foto de perfil:</span> si decides subir

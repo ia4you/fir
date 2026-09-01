@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import BottomNav from "../../components/BottomNav";
 import ResumenDiario from "../../components/ResumenDiario";
-import EspecialidadesStatsTable from "../../components/EspecialidadesStatsTable";
-import TemasPorEspecialidad from "../../components/TemasPorEspecialidad";
+import TemasStatsTable from "../../components/TemasStatsTable";
+import ListaTemas from "../../components/ListaTemas";
 import PuntosDebiles from "../../components/PuntosDebiles";
 import EvolucionAciertosChart from "../../components/EvolucionAciertosChart";
 import { getMetaDiaria } from "../../lib/preferencias";
@@ -48,9 +48,9 @@ export default function Estadisticas() {
       .then(setSesiones)
       .catch(() => setSesiones([]));
 
-    // Una sola carga al montar: la agrupación por especialidad ya viene
-    // resuelta del backend, así que el clic en la leyenda del gráfico solo
-    // cambia qué grupo ya cargado se pinta, sin volver a pedir datos.
+    // Una sola carga al montar: la agrupación por tema ya viene resuelta
+    // del backend, así que el clic en la leyenda del gráfico solo cambia
+    // qué grupo ya cargado se pinta, sin volver a pedir datos.
     fetch("/api/sesiones/evolucion")
       .then((r) => (r.ok ? r.json() : Promise.reject()))
       .then(setSesionesEvolucion)
@@ -78,7 +78,7 @@ export default function Estadisticas() {
 
       <section className="mt-7 px-5">
         <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-ink-muted">
-          Por especialidad
+          Por tema
         </h2>
 
         {error && (
@@ -87,14 +87,14 @@ export default function Estadisticas() {
           </p>
         )}
 
-        {!error && datos && datos.especialidades.length === 0 && (
+        {!error && datos && datos.temas.length === 0 && (
           <div className="rounded-2xl bg-card p-4 text-sm text-ink-muted shadow-sm">
             Todavía no has respondido ninguna pregunta.
           </div>
         )}
 
-        {!error && datos && datos.especialidades.length > 0 && (
-          <EspecialidadesStatsTable especialidades={datos.especialidades} />
+        {!error && datos && datos.temas.length > 0 && (
+          <TemasStatsTable temas={datos.temas} />
         )}
 
         {!error && !datos && (
@@ -106,11 +106,11 @@ export default function Estadisticas() {
         )}
       </section>
 
-      {!error && datos && datos.especialidades.length > 0 && (
-        <PuntosDebiles especialidades={datos.especialidades} />
+      {!error && datos && datos.temas.length > 0 && (
+        <PuntosDebiles temas={datos.temas} />
       )}
 
-      {temas && temas.length > 0 && <TemasPorEspecialidad temas={temas} />}
+      {temas && temas.length > 0 && <ListaTemas temas={temas} />}
 
       <section className="mt-7 px-5">
         <Link
@@ -139,7 +139,7 @@ export default function Estadisticas() {
               <div key={s.id} className="rounded-2xl bg-card p-4 shadow-sm">
                 <div className="flex items-start justify-between">
                   <div>
-                    <p className="font-semibold text-ink">{s.especialidad || "Todas las especialidades"}</p>
+                    <p className="font-semibold text-ink">{s.tema || "Todos los temas"}</p>
                     <p className="mt-0.5 text-sm text-ink-muted">
                       {ETIQUETA_MODO[s.modo] || s.modo} · {formatearFecha(s.fecha)}
                     </p>

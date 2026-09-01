@@ -1,4 +1,3 @@
-import { getEspecialidadesConConteo, getTodasLasPreguntasParaSitemap } from "./lib/especialidades";
 import { query } from "@/lib/db";
 
 const BASE_URL = "https://pir.turel.es";
@@ -18,11 +17,7 @@ async function getPostsBlogParaSitemap() {
 }
 
 export default async function sitemap() {
-  const [especialidades, preguntas, postsBlog] = await Promise.all([
-    getEspecialidadesConConteo(),
-    getTodasLasPreguntasParaSitemap(),
-    getPostsBlogParaSitemap(),
-  ]);
+  const postsBlog = await getPostsBlogParaSitemap();
 
   const estaticas = [
     { url: `${BASE_URL}/`, priority: 1.0, changeFrequency: "weekly" },
@@ -35,18 +30,6 @@ export default async function sitemap() {
     { url: `${BASE_URL}/registro`, priority: 0.3, changeFrequency: "monthly" },
   ];
 
-  const especialidadesUrls = especialidades.map((e) => ({
-    url: `${BASE_URL}/especialidades/${e.slug}`,
-    priority: 0.7,
-    changeFrequency: "monthly",
-  }));
-
-  const preguntasUrls = preguntas.map((p) => ({
-    url: `${BASE_URL}/preguntas/${p.especialidadSlug}/${p.id}`,
-    priority: 0.7,
-    changeFrequency: "yearly",
-  }));
-
   const blogUrls = postsBlog.map((p) => ({
     url: `${BASE_URL}/blog/${p.slug}`,
     priority: 0.6,
@@ -54,7 +37,7 @@ export default async function sitemap() {
     lastModified: p.publicado_at || p.updated_at,
   }));
 
-  return [...estaticas, ...especialidadesUrls, ...preguntasUrls, ...blogUrls].map((entry) => ({
+  return [...estaticas, ...blogUrls].map((entry) => ({
     ...entry,
     lastModified: entry.lastModified ?? new Date(),
   }));

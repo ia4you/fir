@@ -197,7 +197,7 @@ export default function Registro() {
                 <span className="text-brand">•</span> Hasta 10 preguntas por día
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-brand">•</span> Acceso a las 23 especialidades
+                <span className="text-brand">•</span> Acceso a todas las preguntas
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-brand">•</span> Historial y estadísticas incluidos

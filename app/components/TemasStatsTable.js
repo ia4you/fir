@@ -1,5 +1,5 @@
 // Umbrales del nivel: 🟢 ≥75% dominado, 🟡 50-74% en progreso, 🔴 <50% flojo.
-// Distintos de los umbrales de SpecialtyProgressRow (70/40) a propósito: esta
+// Distintos de los umbrales de TemaProgressRow (70/40) a propósito: esta
 // tabla usa el criterio pedido para el dashboard mejorado.
 function nivel(porcentaje, total) {
   if (total === 0) return { emoji: "⚪", texto: "Sin empezar" };
@@ -14,32 +14,32 @@ const TENDENCIA = {
   flat: { icono: "→", clase: "text-ink-muted" },
 };
 
-export default function EspecialidadesStatsTable({ especialidades }) {
-  if (!especialidades || especialidades.length === 0) return null;
+export default function TemasStatsTable({ temas }) {
+  if (!temas || temas.length === 0) return null;
 
   return (
     <div className="overflow-x-auto rounded-2xl bg-card shadow-sm">
       <table className="w-full min-w-[420px] border-collapse text-left text-sm">
         <thead>
           <tr className="border-b border-track text-xs font-bold uppercase tracking-wide text-ink-muted">
-            <th className="px-4 py-3">Especialidad</th>
+            <th className="px-4 py-3">Tema</th>
             <th className="px-4 py-3">% Aciertos</th>
             <th className="px-4 py-3">Tendencia</th>
             <th className="px-4 py-3">Nivel</th>
           </tr>
         </thead>
         <tbody>
-          {especialidades.map((e) => {
-            const { emoji, texto } = nivel(e.porcentaje, e.total);
-            const t = TENDENCIA[e.total >= 4 ? e.tendencia : "flat"];
+          {temas.map((t) => {
+            const { emoji, texto } = nivel(t.porcentaje, t.total);
+            const tend = TENDENCIA[t.total >= 4 ? t.tendencia : "flat"];
             return (
-              <tr key={e.especialidad} className="border-b border-track last:border-0">
-                <td className="px-4 py-3 font-semibold text-ink">{e.especialidad}</td>
+              <tr key={t.tema} className="border-b border-track last:border-0">
+                <td className="px-4 py-3 font-semibold text-ink">{t.tema}</td>
                 <td className="px-4 py-3 font-bold text-ink">
-                  {e.total > 0 ? `${e.porcentaje}%` : "—"}
+                  {t.total > 0 ? `${t.porcentaje}%` : "—"}
                 </td>
-                <td className={`px-4 py-3 text-base font-bold ${t.clase}`}>
-                  {e.total >= 4 ? t.icono : "—"}
+                <td className={`px-4 py-3 text-base font-bold ${tend.clase}`}>
+                  {t.total >= 4 ? tend.icono : "—"}
                 </td>
                 <td className="px-4 py-3">
                   <span title={texto}>

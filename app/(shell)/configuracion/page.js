@@ -54,8 +54,7 @@ export default function Configuracion() {
   const esPremium = session?.user?.plan === "premium";
 
   const [modoTest, setModoTest] = useState("practica"); // "practica" | "simulacro"
-  const [especialidades, setEspecialidades] = useState([]);
-  const [especialidad, setEspecialidad] = useState("");
+  const [tema, setTema] = useState("");
   const [anio, setAnio] = useState("");
   const [cantidad, setCantidad] = useState("20");
   const [temporizadorActivo, setTemporizadorActivo] = useState(
@@ -67,13 +66,6 @@ export default function Configuracion() {
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState("");
   const [limiteAlcanzado, setLimiteAlcanzado] = useState(false);
-
-  useEffect(() => {
-    fetch("/api/especialidades")
-      .then((r) => r.json())
-      .then(setEspecialidades)
-      .catch(() => setEspecialidades([]));
-  }, []);
 
   useEffect(() => {
     if (!session?.user) return;
@@ -101,8 +93,6 @@ export default function Configuracion() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [restanteHoy]);
 
-  const totalPreguntas = especialidades.reduce((acc, e) => acc + e.total, 0);
-
   async function empezarSimulacro() {
     if (!esPremium) {
       setError("El simulacro PIR completo es una función premium.");
@@ -127,7 +117,7 @@ export default function Configuracion() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           modo: "simulacro",
-          especialidad: null,
+          tema: null,
           total_preguntas: preguntas.length,
         }),
       });
@@ -170,7 +160,7 @@ export default function Configuracion() {
     setEnviando(true);
     try {
       const params = new URLSearchParams();
-      if (especialidad) params.set("especialidad", especialidad);
+      if (tema) params.set("tema", tema);
       if (anio) params.set("anio", anio);
       const opcionCantidad = OPCIONES_CANTIDAD.find((o) => o.valor === cantidad);
       params.set("cantidad", opcionCantidad ? String(opcionCantidad.numero) : cantidad);
@@ -190,7 +180,7 @@ export default function Configuracion() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           modo: "practica",
-          especialidad: especialidad || null,
+          tema: tema || null,
           total_preguntas: preguntas.length,
         }),
       });
@@ -265,15 +255,14 @@ export default function Configuracion() {
 
         {modoTest === "practica" && (
           <>
-            <FieldCard label="Especialidad">
-              <SelectNativo value={especialidad} onChange={(e) => setEspecialidad(e.target.value)}>
-                <option value="">Todas ({totalPreguntas || "…"})</option>
-                {especialidades.map((e) => (
-                  <option key={e.especialidad} value={e.especialidad}>
-                    {e.especialidad} ({e.total})
-                  </option>
-                ))}
-              </SelectNativo>
+            <FieldCard label="Tema">
+              <input
+                type="text"
+                value={tema}
+                onChange={(e) => setTema(e.target.value)}
+                placeholder="Todos los temas — escribe para filtrar"
+                className="h-12 w-full rounded-xl border border-track bg-card px-4 font-semibold text-ink placeholder:font-normal placeholder:text-ink-muted focus:border-brand focus:outline-none"
+              />
             </FieldCard>
 
             <FieldCard label="Año">
@@ -360,7 +349,7 @@ export default function Configuracion() {
             <ul className="flex flex-col gap-2 text-sm text-ink">
               <li>
                 📝 Examen de 206 preguntas, combinando los 5 años disponibles (2021-2025) y
-                repartidas por especialidad según su peso histórico real en las convocatorias
+                repartidas por tema según su peso histórico real en las convocatorias
                 oficiales.
               </li>
               <li>⏱️ Temporizador real de 4 horas (240 minutos) para todo el examen.</li>

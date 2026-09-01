@@ -5,9 +5,9 @@ function colorPorPorcentaje(pct) {
   return { dot: "bg-danger", bar: "bg-danger", text: "text-danger" };
 }
 
-export default function SpecialtyProgressRow({ nombre, porcentaje, total, variante = "card" }) {
+export default function TemaProgressRow({ nombre, porcentaje, total, variante = "card" }) {
   // Sin preguntas respondidas todavía: estado neutro, no "peligro" (0% en rojo
-  // sería engañoso para una especialidad que simplemente no se ha empezado).
+  // sería engañoso para un tema que simplemente no se ha empezado).
   const sinEmpezar = total === 0;
   const color = sinEmpezar
     ? { dot: "bg-track", bar: "bg-track", text: "text-ink-muted" }

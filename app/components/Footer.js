@@ -5,7 +5,6 @@ export default function Footer() {
     <footer className="border-t border-track px-5 py-10 text-sm text-ink-muted">
       <nav className="mx-auto flex max-w-4xl flex-wrap justify-center gap-x-6 gap-y-2 text-center font-semibold text-brand">
         <Link href="/#hero">Inicio</Link>
-        <Link href="/#especialidades">Especialidades</Link>
         <Link href="/login">Login</Link>
         <Link href="/registro">Registro</Link>
         <Link href="/aviso-legal">Aviso legal</Link>

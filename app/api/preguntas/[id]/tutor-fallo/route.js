@@ -33,7 +33,7 @@ export async function POST(request, { params }) {
 
   try {
     const { rows } = await query(
-      `SELECT pregunta, especialidad, correcta, explicacion,
+      `SELECT pregunta, tema, correcta, explicacion,
               opcion_a, opcion_b, opcion_c, opcion_d, opcion_e
        FROM preguntas WHERE id = $1`,
       [preguntaId]
@@ -58,7 +58,7 @@ export async function POST(request, { params }) {
 
     const analisis = await generarTutorFallo({
       pregunta: p.pregunta,
-      especialidad: p.especialidad,
+      tema: p.tema,
       opciones,
       respuestaDada,
       respuestaCorrecta,

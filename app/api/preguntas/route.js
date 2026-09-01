@@ -10,20 +10,20 @@ export const dynamic = "force-dynamic";
 // tener un número distinto de preguntas por convocatoria.
 const TOTAL_SIMULACRO = 206;
 
-// Reparte TOTAL_SIMULACRO preguntas entre especialidades según su peso medio
-// histórico (% que representa cada especialidad en cada convocatoria
-// disponible, tratando como 0% los años en que no tuvo preguntas), con
-// redondeo por "mayor resto" para que la suma cuadre exacto.
+// Reparte TOTAL_SIMULACRO preguntas entre temas según su peso medio
+// histórico (% que representa cada tema en cada convocatoria disponible,
+// tratando como 0% los años en que no tuvo preguntas), con redondeo por
+// "mayor resto" para que la suma cuadre exacto.
 function repartoPorMayorResto(pesos, total) {
   const crudos = pesos.map((p) => ({
-    especialidad: p.especialidad,
+    tema: p.tema,
     exacto: (parseFloat(p.pct_medio) * total) / 100,
   }));
   let asignado = 0;
   const reparto = crudos.map((c) => {
     const base = Math.floor(c.exacto);
     asignado += base;
-    return { especialidad: c.especialidad, cantidad: base, resto: c.exacto - base };
+    return { tema: c.tema, cantidad: base, resto: c.exacto - base };
   });
   const faltan = total - asignado;
   reparto
@@ -31,7 +31,7 @@ function repartoPorMayorResto(pesos, total) {
     .sort((a, b) => b.resto - a.resto)
     .slice(0, faltan)
     .forEach((r) => {
-      reparto.find((x) => x.especialidad === r.especialidad).cantidad += 1;
+      reparto.find((x) => x.tema === r.tema).cantidad += 1;
     });
   return reparto;
 }
@@ -45,51 +45,51 @@ function barajar(array) {
 }
 
 // Simulacro: combina los años disponibles en un único examen de
-// TOTAL_SIMULACRO preguntas, repartidas por especialidad según su peso
-// histórico real (no una selección aleatoria simple sobre todo el banco).
+// TOTAL_SIMULACRO preguntas, repartidas por tema según su peso histórico
+// real (no una selección aleatoria simple sobre todo el banco).
 async function generarSimulacro() {
   const { rows: pesos } = await query(`
     WITH anios AS (SELECT DISTINCT año FROM preguntas),
-         especialidades AS (SELECT DISTINCT especialidad FROM preguntas),
+         temas AS (SELECT DISTINCT tema FROM preguntas),
          combinaciones AS (
-           SELECT a.año, e.especialidad FROM anios a CROSS JOIN especialidades e
+           SELECT a.año, t.tema FROM anios a CROSS JOIN temas t
          ),
          conteos AS (
-           SELECT c.año, c.especialidad, COALESCE(p.cnt, 0) AS num_preguntas
+           SELECT c.año, c.tema, COALESCE(p.cnt, 0) AS num_preguntas
            FROM combinaciones c
            LEFT JOIN (
-             SELECT año, especialidad, COUNT(*) AS cnt FROM preguntas GROUP BY año, especialidad
-           ) p ON p.año = c.año AND p.especialidad = c.especialidad
+             SELECT año, tema, COUNT(*) AS cnt FROM preguntas GROUP BY año, tema
+           ) p ON p.año = c.año AND p.tema = c.tema
          ),
          totales_año AS (SELECT año, SUM(num_preguntas) AS total FROM conteos GROUP BY año),
          pcts AS (
-           SELECT c.año, c.especialidad, c.num_preguntas * 100.0 / t.total AS pct
+           SELECT c.año, c.tema, c.num_preguntas * 100.0 / t.total AS pct
            FROM conteos c JOIN totales_año t ON t.año = c.año
          )
-    SELECT especialidad, AVG(pct) AS pct_medio
+    SELECT tema, AVG(pct) AS pct_medio
     FROM pcts
-    GROUP BY especialidad
+    GROUP BY tema
   `);
 
   const reparto = repartoPorMayorResto(pesos, TOTAL_SIMULACRO);
 
-  const porEspecialidad = await Promise.all(
+  const porTema = await Promise.all(
     reparto
       .filter((r) => r.cantidad > 0)
       .map((r) =>
         query(
-          `SELECT id, año, numero, especialidad, pregunta,
+          `SELECT id, año, numero, tema, pregunta,
                   opcion_a, opcion_b, opcion_c, opcion_d, opcion_e, imagen_path
            FROM preguntas
-           WHERE especialidad = $1
+           WHERE tema IS NOT DISTINCT FROM $1
            ORDER BY RANDOM()
            LIMIT $2`,
-          [r.especialidad, r.cantidad]
+          [r.tema, r.cantidad]
         )
       )
   );
 
-  return barajar(porEspecialidad.flatMap((r) => r.rows));
+  return barajar(porTema.flatMap((r) => r.rows));
 }
 
 // Nunca se selecciona la columna `correcta` aquí: la respuesta correcta solo
@@ -101,8 +101,6 @@ export async function GET(request) {
   }
 
   const { searchParams } = new URL(request.url);
-  const especialidad = searchParams.get("especialidad");
-  const especialidadesParam = searchParams.get("especialidades");
   const tema = searchParams.get("tema");
   const temasParam = searchParams.get("temas");
   const anioParam = searchParams.get("anio");
@@ -111,7 +109,7 @@ export async function GET(request) {
   const modo = searchParams.get("modo");
   // "original" devuelve las preguntas en su orden real de examen (por
   // número) en vez del orden aleatorio por defecto. Ya no lo usa el
-  // Simulacro (ahora mezcla años/especialidades vía modo=simulacro).
+  // Simulacro (ahora mezcla años/temas vía modo=simulacro).
   const orden = searchParams.get("orden") === "original" ? "original" : "random";
 
   if (modo === "simulacro") {
@@ -137,7 +135,7 @@ export async function GET(request) {
     }
     try {
       const { rows } = await query(
-        `SELECT id, año, numero, especialidad, pregunta,
+        `SELECT id, año, numero, tema, pregunta,
                 opcion_a, opcion_b, opcion_c, opcion_d, opcion_e, imagen_path
          FROM preguntas
          WHERE id = ANY($1::int[])`,
@@ -168,22 +166,9 @@ export async function GET(request) {
 
   const condiciones = [];
   const valores = [];
-  // `especialidades` (plural, coma-separada) permite mezclar varias en un
-  // mismo test (p.ej. "entrenar puntos débiles"); si viene, tiene prioridad
-  // sobre `especialidad` (singular).
-  const listaEspecialidades = especialidadesParam
-    ? especialidadesParam.split(",").map((v) => v.trim()).filter(Boolean)
-    : [];
-  if (listaEspecialidades.length > 0) {
-    valores.push(listaEspecialidades);
-    condiciones.push(`especialidad = ANY($${valores.length}::text[])`);
-  } else if (especialidad) {
-    valores.push(especialidad);
-    condiciones.push(`especialidad = $${valores.length}`);
-  }
-  // `temas` (plural, coma-separada) tiene la misma prioridad sobre `tema`
-  // (singular) que `especialidades` sobre `especialidad`. Es un filtro
-  // adicional, combinable con el de especialidad/especialidades (AND).
+  // `temas` (plural, coma-separada) permite mezclar varios en un mismo test
+  // (p.ej. "entrenar puntos débiles"); si viene, tiene prioridad sobre
+  // `tema` (singular).
   const listaTemas = temasParam
     ? temasParam.split(",").map((v) => v.trim()).filter(Boolean)
     : [];
@@ -204,7 +189,7 @@ export async function GET(request) {
 
   try {
     const { rows } = await query(
-      `SELECT id, año, numero, especialidad, pregunta,
+      `SELECT id, año, numero, tema, pregunta,
               opcion_a, opcion_b, opcion_c, opcion_d, opcion_e, imagen_path
        FROM preguntas
        ${where}

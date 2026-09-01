@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 
 // next/link ya intenta hacer scroll al id del hash tras navegar, pero esta
-// página carga datos async (getEspecialidadesConConteo) y el elemento puede
+// página carga datos async y el elemento puede
 // no estar montado todavía cuando el router lo intenta — con lo cual el
 // scroll nativo no llega a producirse. Se reintenta a mano unos instantes
 // tras el montaje; si el navegador ya hizo scroll bien, esto no cambia nada

@@ -18,7 +18,7 @@ export async function GET(request, { params }) {
 
   try {
     const sesionRes = await query(
-      `SELECT id, modo, especialidad, total_preguntas, aciertos, duracion_segundos, user_id
+      `SELECT id, modo, tema, total_preguntas, aciertos, duracion_segundos, user_id
        FROM sesiones WHERE id = $1`,
       [sesionId]
     );
@@ -31,14 +31,14 @@ export async function GET(request, { params }) {
     }
 
     const desgloseRes = await query(
-      `SELECT p.especialidad,
+      `SELECT p.tema,
               COUNT(*)::int AS total,
               COUNT(*) FILTER (WHERE rs.correcta)::int AS aciertos
        FROM respuestas_sesion rs
        JOIN preguntas p ON p.id = rs.pregunta_id
        WHERE rs.sesion_id = $1
-       GROUP BY p.especialidad
-       ORDER BY p.especialidad`,
+       GROUP BY p.tema
+       ORDER BY p.tema`,
       [sesionId]
     );
 
@@ -120,14 +120,14 @@ export async function GET(request, { params }) {
     return NextResponse.json({
       sesion_id: sesion.id,
       modo: sesion.modo,
-      especialidad: sesion.especialidad,
+      tema: sesion.tema,
       total_preguntas: sesion.total_preguntas,
       aciertos: sesion.aciertos,
       fallos: sesion.total_preguntas - sesion.aciertos,
       porcentaje_aciertos: porcentajeAciertos,
       duracion_segundos: sesion.duracion_segundos,
-      desglose_especialidad: desgloseRes.rows.map((r) => ({
-        especialidad: r.especialidad,
+      desglose_tema: desgloseRes.rows.map((r) => ({
+        tema: r.tema,
         total: r.total,
         aciertos: r.aciertos,
         porcentaje: r.total > 0 ? Math.round((r.aciertos / r.total) * 1000) / 10 : 0,

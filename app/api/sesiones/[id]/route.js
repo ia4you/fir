@@ -38,7 +38,7 @@ export async function PATCH(request, { params }) {
       `UPDATE sesiones
        SET aciertos = $1, duracion_segundos = $2
        WHERE id = $3
-       RETURNING id, modo, especialidad, total_preguntas, aciertos, duracion_segundos`,
+       RETURNING id, modo, tema, total_preguntas, aciertos, duracion_segundos`,
       [body.aciertos, duracionSegundos, sesionId]
     );
     return NextResponse.json(rows[0]);
