@@ -43,8 +43,17 @@ next-env.d.ts
 *.keystore
 key.properties
 
-# Ficheros fuente de ingesta (Excel, PDFs, cuadernillos) — nunca en git
-/ingesta
+# Ficheros fuente de ingesta (Excel, PDFs, cuadernillos, scripts y
+# JSON intermedios) — nunca en git. EXCEPCIÓN: los insert_*.sql ya
+# aplicados en producción SÍ se versionan (valor de auditoría
+# permanente: qué se cargó en pir-db y con qué criterio).
+/ingesta/*
+!/ingesta/*/
+/ingesta/*/*
+!/ingesta/*/insert_*.sql
+
+# Credenciales de prueba, nunca en git
+credenciales_test.txt
 
 # Claude Code: checkpoint de sesión, no es código del proyecto
 .claude/RESUME.md
