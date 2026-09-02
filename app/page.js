@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getTotalPreguntas } from "./lib/preguntas";
 import Logo from "./components/Logo";
 import ScrollToHash from "./components/ScrollToHash";
@@ -32,7 +33,7 @@ export async function generateMetadata() {
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0f766e",
+  themeColor: "#7c3aed",
 };
 
 // El build de Dokploy corre sin acceso a mir-db (red de build aislada de la
@@ -44,6 +45,8 @@ const PASOS = [
   {
     titulo: "Elige tema o año",
     texto: "Practica por tema o repasa una convocatoria completa.",
+    imagenDecorativa: "/landing/tarjeta-tema-anio.png",
+    imagenAlto: 135,
     icono: (props) => (
       <svg viewBox="0 0 24 24" fill="none" strokeWidth={2} stroke="currentColor" {...props}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 5.5c2-1 5-1 8 0v14c-3-1-6-1-8 0v-14Z" />
@@ -54,6 +57,8 @@ const PASOS = [
   {
     titulo: "Responde las preguntas",
     texto: "Corrige tus respuestas al instante y consulta la explicación clínica cuando esté disponible.",
+    imagenDecorativa: "/landing/tarjeta-responde.png",
+    imagenAlto: 95,
     icono: (props) => (
       <svg viewBox="0 0 24 24" fill="none" strokeWidth={2} stroke="currentColor" {...props}>
         <path strokeLinecap="round" strokeLinejoin="round" d="m5 13 4 4 10-10" />
@@ -63,6 +68,8 @@ const PASOS = [
   {
     titulo: "Ve tu progreso por tema",
     texto: "Detecta tus puntos débiles y enfoca el repaso donde más falta hace.",
+    imagenDecorativa: "/landing/tarjeta-progreso.png",
+    imagenAlto: 95,
     icono: (props) => (
       <svg viewBox="0 0 24 24" fill="none" strokeWidth={2} stroke="currentColor" {...props}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M5 20V10M12 20V4M19 20v-7" />
@@ -158,32 +165,55 @@ export default async function LandingPage() {
         </nav>
       </header>
 
-      <section id="hero" className="px-5 pt-10 pb-12 text-center sm:pt-14 sm:pb-16">
-        <h1 className="mx-auto max-w-2xl text-4xl font-extrabold leading-tight text-ink sm:text-5xl">
-          Te hacemos mejor respondiendo preguntas PIR
-        </h1>
-        <p className="mx-auto mt-4 max-w-xl text-ink-muted sm:text-lg">
-          Preguntas PIR oficiales. Respuestas verificadas. Controversias documentadas.
-        </p>
+      <section
+        id="hero"
+        className="relative overflow-hidden bg-[#140f2e] px-5 pt-10 pb-12 text-center sm:pt-14 sm:pb-16"
+      >
+        <div className="mx-auto flex max-w-6xl items-center justify-center gap-4 lg:gap-8">
+          <Image
+            src="/landing/hero-izquierda.png"
+            alt="Ilustración de estudiante de Psicología repasando el PIR"
+            width={420}
+            height={355}
+            className="hidden w-[120px] shrink-0 md:block lg:w-[240px] xl:w-[320px]"
+          />
 
-        <div className="mx-auto mt-7 flex max-w-xs flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center">
-          <Link
-            href="/demo"
-            className="flex h-14 items-center justify-center rounded-2xl bg-brand px-8 text-lg font-bold text-white shadow-sm active:bg-brand-dark"
-          >
-            Empezar gratis
-          </Link>
-          <a
-            href="#como-funciona"
-            className="flex h-14 items-center justify-center rounded-2xl border-2 border-brand px-8 text-lg font-bold text-brand"
-          >
-            Ver cómo funciona
-          </a>
+          <div className="min-w-0 max-w-2xl flex-1">
+            <h1 className="text-4xl font-extrabold leading-tight text-white sm:text-5xl">
+              Te hacemos mejor respondiendo preguntas PIR
+            </h1>
+            <p className="mx-auto mt-4 max-w-xl text-white/80 sm:text-lg">
+              Preguntas PIR oficiales. Respuestas verificadas. Controversias documentadas.
+            </p>
+
+            <div className="mx-auto mt-7 flex max-w-xs flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center">
+              <Link
+                href="/demo"
+                className="flex h-14 items-center justify-center rounded-2xl bg-brand px-8 text-lg font-bold text-white shadow-sm active:bg-brand-dark"
+              >
+                Empezar gratis
+              </Link>
+              <a
+                href="#como-funciona"
+                className="flex h-14 items-center justify-center rounded-2xl border-2 border-brand px-8 text-lg font-bold text-brand"
+              >
+                Ver cómo funciona
+              </a>
+            </div>
+
+            <p className="mx-auto mt-8 max-w-2xl text-sm font-semibold text-white/60">
+              {textoHero}
+            </p>
+          </div>
+
+          <Image
+            src="/landing/hero-derecha.png"
+            alt="Ilustración de estudiante de Psicología repasando el PIR"
+            width={420}
+            height={355}
+            className="hidden w-[120px] shrink-0 md:block lg:w-[240px] xl:w-[320px]"
+          />
         </div>
-
-        <p className="mx-auto mt-8 max-w-2xl text-sm font-semibold text-ink-muted">
-          {textoHero}
-        </p>
       </section>
 
       <section id="como-funciona" className="px-5 py-12 sm:py-16">
@@ -191,8 +221,18 @@ export default async function LandingPage() {
         <div className="mx-auto mt-8 grid max-w-4xl gap-5 sm:grid-cols-3">
           {PASOS.map((paso, i) => (
             <div key={paso.titulo} className="rounded-2xl bg-card p-5 text-center shadow-sm">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-light text-brand">
-                <paso.icono className="h-6 w-6" />
+              <div className="mx-auto flex items-center justify-center gap-2">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-light text-brand">
+                  <paso.icono className="h-6 w-6" />
+                </div>
+                <Image
+                  src={paso.imagenDecorativa}
+                  alt=""
+                  aria-hidden="true"
+                  width={107}
+                  height={paso.imagenAlto}
+                  className="h-12 w-auto"
+                />
               </div>
               <p className="mt-3 text-xs font-bold uppercase tracking-wide text-brand">
                 Paso {i + 1}

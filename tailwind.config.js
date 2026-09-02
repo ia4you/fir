@@ -11,15 +11,15 @@ module.exports = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        // Rebrand 2026-08: turquesa/teal + azul marino (antes lavanda sobre
-        // fondo verdoso). surface/track/ink/panel/brand.light están atados a
-        // variables CSS (ver globals.css) para poder tener modo oscuro;
-        // brand.DEFAULT/dark/accent quedan fijos a propósito, el teal es
-        // igual en ambos modos.
+        // Rebrand 2026-08: violeta/morado + teal como acento (antes
+        // turquesa/teal + azul marino). surface/track/ink/panel/brand.light
+        // están atados a variables CSS (ver globals.css) para poder tener
+        // modo oscuro; brand.DEFAULT/dark/accent quedan fijos a propósito,
+        // son iguales en ambos modos.
         brand: {
-          DEFAULT: "#0f766e", // botones primarios, acentos, nav activo (teal-700, AA con texto blanco)
+          DEFAULT: "#7c3aed", // botones primarios, acentos, nav activo (violet-600, 5.7:1 con texto blanco, AA)
           light: "var(--brand-light)", // tarjeta "días seguidos", opción seleccionada
-          dark: "#115e59", // hover/estados pulsados (teal-800)
+          dark: "#6d28d9", // hover/estados pulsados (violet-700, 7.1:1 con texto blanco, AAA)
           accent: "#14b8a6", // iconos/decorativo grande sin texto encima (teal-500)
         },
         surface: "var(--surface)", // fondo de página
@@ -48,7 +48,7 @@ module.exports = {
           text: "#92400e",
         },
         badge: {
-          bg: "#f1f5f9", // etiqueta de especialidad en la pregunta (slate-100, neutro)
+          bg: "#f1f5f9", // etiqueta de tema en la pregunta (slate-100, neutro)
           text: "#334155", // slate-700
         },
         panel: "var(--panel)", // caja de explicación en la corrección

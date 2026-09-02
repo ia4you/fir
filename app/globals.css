@@ -12,7 +12,7 @@
   --ink-muted: #475569;
   --track: #e2e8f0;
   --panel: #f1f5f9;
-  --brand-light: #ccfbf1;
+  --brand-light: #ede9fe;
 }
 
 /* Paleta oscura: fondo/superficie de app/globals.css. El teal de marca
@@ -24,7 +24,7 @@
   --ink-muted: #94a3b8;
   --track: #334155;
   --panel: #1e293b;
-  --brand-light: #134e4a;
+  --brand-light: #4c1d95;
 }
 
 /* text-brand/border-brand (#0f766e, #115e59) son deliberadamente oscuros
@@ -39,14 +39,14 @@
 :root.dark .hover\:text-brand:hover,
 :root.dark .group:hover .group-hover\:text-brand,
 :root.dark .active\:text-brand-dark:active {
-  color: #5eead4;
+  color: #c4b5fd;
 }
 :root.dark .border-brand,
 :root.dark .focus\:border-brand:focus {
-  border-color: #5eead4;
+  border-color: #c4b5fd;
 }
 :root.dark .focus\:ring-brand:focus {
-  --tw-ring-color: #5eead4;
+  --tw-ring-color: #c4b5fd;
 }
 
 body {
