@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import OptionCard from "../../../components/OptionCard";
+import TestFeedback from "../../../components/TestFeedback";
 
 const LETRAS = ["A", "B", "C", "D", "E"];
 
@@ -425,197 +425,27 @@ export default function TestPregunta({ params }) {
             }
           }}
         >
-          <div className="flex-1 overflow-y-auto px-5 pb-6 pt-safe">
-            <div className="flex items-center justify-between gap-3 pt-2">
-              <div className="flex items-center gap-3">
-                <span
-                  className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-white ${
-                    resultado.correcta ? "bg-success" : "bg-danger"
-                  }`}
-                >
-                  {resultado.correcta ? (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="h-6 w-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="m5 13 4 4 10-10" />
-                    </svg>
-                  ) : (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="h-6 w-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6 6 18" />
-                    </svg>
-                  )}
-                </span>
-                <p
-                  className={`text-2xl font-extrabold ${
-                    resultado.correcta ? "text-success-text" : "text-danger-text"
-                  }`}
-                >
-                  {resultado.correcta ? "CORRECTO" : "INCORRECTO"}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={cerrarExplicacion}
-                aria-label="Cerrar explicación"
-                className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-card shadow-sm"
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4 text-ink">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6 6 18" />
-                </svg>
-              </button>
-            </div>
-
-            <div className="mt-5 flex flex-col gap-2 text-ink">
-              <p>
-                <span className="font-bold">Respondiste: </span>
-                {seleccionada
-                  ? `${seleccionada} — ${preguntaActual[`opcion_${seleccionada.toLowerCase()}`]}`
-                  : "(sin responder — se agotó el tiempo)"}
-              </p>
-              {!resultado.correcta && (
-                <p>
-                  <span className="font-bold">Respuesta correcta: </span>
-                  {resultado.respuesta_correcta} —{" "}
-                  {preguntaActual[`opcion_${String(resultado.respuesta_correcta).toLowerCase()}`]}
-                </p>
-              )}
-            </div>
-
-            <hr className="my-5 border-track" />
-
-            <div>
-              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-ink-muted">
-                {resultado.controversia ? "Respuesta cuestionada" : "Explicación"}
-              </p>
-              {resultado.controversia ? (
-                <div className="flex flex-col gap-3">
-                  <div className="rounded-xl border border-warning-border bg-warning-bg p-3 text-xs text-warning-text">
-                    ⚠️ Las explicaciones de esta sección reflejan análisis clínico basado en
-                    literatura médica. La respuesta válida en el examen PIR es siempre la de la
-                    plantilla oficial del Ministerio de Sanidad.
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wide text-danger-text">
-                      🔴 Respuesta oficial Ministerio
-                    </p>
-                    <p className="mt-1 text-sm text-ink">
-                      {resultado.controversia.respuesta_oficial.letra} —{" "}
-                      {resultado.controversia.respuesta_oficial.texto}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wide text-warning-text">
-                      🟡 Respuesta alternativa defendible
-                    </p>
-                    <p className="mt-1 text-sm text-ink">
-                      {resultado.controversia.respuesta_recomendada
-                        ? `${resultado.controversia.respuesta_recomendada.letra} — ${resultado.controversia.respuesta_recomendada.texto}`
-                        : "No se identifica una única alternativa clara — ver motivo de la discrepancia."}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">
-                      📚 Motivo de la discrepancia
-                    </p>
-                    <p className="mt-1 text-sm text-ink-muted">
-                      {resultado.controversia.motivo || "Respuesta cuestionada — sin detalle documentado."}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">
-                      🎯 Consejo para el examen
-                    </p>
-                    <p className="mt-1 text-sm text-ink-muted">
-                      En el PIR debes marcar la respuesta oficial aunque la evidencia clínica
-                      pueda apuntar a otra dirección.
-                    </p>
-                  </div>
-
-                  <Link href="/controversias" target="_blank" className="text-sm font-bold text-brand">
-                    Ver todas las controversias →
-                  </Link>
-                </div>
-              ) : resultado.explicacion ? (
-                <div className="flex flex-col items-start gap-2">
-                  <p className="text-sm leading-relaxed text-ink">{resultado.explicacion}</p>
-                </div>
-              ) : resultado.explicacion_calidad === "sin_imagen" ? (
-                <div className="flex flex-col items-start gap-2">
-                  <span className="flex items-center gap-1.5 rounded-full bg-track px-3 py-1 text-xs font-bold text-ink-muted">
-                    🖼️ Sin imagen disponible
-                  </span>
-                  <p className="text-sm leading-relaxed text-ink-muted">
-                    Esta pregunta hace referencia a una imagen clínica del examen original.
-                    Explicación no disponible.
-                  </p>
-                </div>
-              ) : (
-                <div className="flex flex-col items-start gap-2">
-                  <span className="flex items-center gap-1.5 rounded-full bg-track px-3 py-1 text-xs font-bold text-ink-muted">
-                    📚 No disponible
-                  </span>
-                  <p className="text-sm leading-relaxed text-ink-muted">
-                    Explicación no disponible para esta pregunta.
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {!resultado.correcta && !resultado.controversia && (
-              <div className="mt-5 border-t border-track pt-4">
-                {!tutorFallo && !tutorFalloCargando && (
-                  <button
-                    type="button"
-                    onClick={pedirTutorFallo}
-                    className="flex items-center gap-1.5 text-sm font-bold text-brand"
-                  >
-                    🤔 ¿Por qué he fallado esto?
-                  </button>
-                )}
-
-                {tutorFalloCargando && (
-                  <p className="text-sm text-ink-muted">Analizando tu fallo…</p>
-                )}
-
-                {tutorFalloError && !tutorFalloCargando && (
-                  <div className="flex flex-col items-start gap-2">
-                    <p className="text-sm text-danger-text">{tutorFalloError}</p>
-                    <button
-                      type="button"
-                      onClick={pedirTutorFallo}
-                      className="text-sm font-bold text-brand"
-                    >
-                      Reintentar
-                    </button>
-                  </div>
-                )}
-
-                {tutorFallo && (
-                  <div className="rounded-xl bg-brand-light p-3">
-                    <p className="mb-1 text-xs font-bold uppercase tracking-wide text-brand">
-                      🎓 Tutor IA — ¿por qué he fallado esto?
-                    </p>
-                    <p className="text-sm leading-relaxed text-ink">{tutorFallo}</p>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-
-          <div className="border-t border-track px-5 py-4 pb-safe">
-            <button
-              type="button"
-              onClick={siguientePregunta}
-              className="flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-brand text-lg font-bold text-white shadow-sm active:bg-brand-dark"
-            >
-              {indice + 1 < preguntas.length ? "Siguiente pregunta" : "Ver resultados"}
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="h-5 w-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" />
-              </svg>
-            </button>
-          </div>
+          <TestFeedback
+            correcta={resultado.correcta}
+            seleccionada={seleccionada}
+            textoSeleccionada={
+              seleccionada ? preguntaActual[`opcion_${seleccionada.toLowerCase()}`] : null
+            }
+            respuestaCorrectaLetra={resultado.respuesta_correcta}
+            respuestaCorrectaTexto={
+              preguntaActual[`opcion_${String(resultado.respuesta_correcta).toLowerCase()}`]
+            }
+            explicacion={resultado.explicacion}
+            explicacionCalidad={resultado.explicacion_calidad}
+            controversia={resultado.controversia}
+            tutorFallo={tutorFallo}
+            tutorFalloCargando={tutorFalloCargando}
+            tutorFalloError={tutorFalloError}
+            onPedirTutorFallo={pedirTutorFallo}
+            onCerrar={cerrarExplicacion}
+            onSiguiente={siguientePregunta}
+            siguienteLabel={indice + 1 < preguntas.length ? "Siguiente pregunta" : "Ver resultados"}
+          />
         </div>
       )}
 
