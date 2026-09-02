@@ -43,16 +43,21 @@ next-env.d.ts
 *.keystore
 key.properties
 
-# Ficheros fuente de ingesta (Excel, PDFs, cuadernillos, scripts y
-# JSON intermedios) — nunca en git. EXCEPCIÓN: los insert_*.sql y
-# update_*.sql ya aplicados en producción SÍ se versionan (valor de
-# auditoría permanente: qué se cargó/modificó en pir-db y con qué
-# criterio).
+# Ficheros fuente de ingesta (Excel, PDFs, cuadernillos, JSON
+# intermedios) — nunca en git. EXCEPCIÓN: los insert_*.sql/update_*.sql
+# ya aplicados en producción, y los scripts/package que los generaron,
+# SÍ se versionan (valor de auditoría permanente: qué se cargó/modificó
+# en pir-db y con qué criterio/código).
 /ingesta/*
 !/ingesta/*/
 /ingesta/*/*
 !/ingesta/*/insert_*.sql
 !/ingesta/*/update_*.sql
+!/ingesta/update_*.sql
+!/ingesta/generar_explicaciones.mjs
+!/ingesta/generar_update_explicaciones.mjs
+!/ingesta/package.json
+!/ingesta/package-lock.json
 
 # Credenciales de prueba, nunca en git
 credenciales_test.txt
