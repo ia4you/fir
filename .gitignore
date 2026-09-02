@@ -44,13 +44,15 @@ next-env.d.ts
 key.properties
 
 # Ficheros fuente de ingesta (Excel, PDFs, cuadernillos, scripts y
-# JSON intermedios) — nunca en git. EXCEPCIÓN: los insert_*.sql ya
-# aplicados en producción SÍ se versionan (valor de auditoría
-# permanente: qué se cargó en pir-db y con qué criterio).
+# JSON intermedios) — nunca en git. EXCEPCIÓN: los insert_*.sql y
+# update_*.sql ya aplicados en producción SÍ se versionan (valor de
+# auditoría permanente: qué se cargó/modificó en pir-db y con qué
+# criterio).
 /ingesta/*
 !/ingesta/*/
 /ingesta/*/*
 !/ingesta/*/insert_*.sql
+!/ingesta/*/update_*.sql
 
 # Credenciales de prueba, nunca en git
 credenciales_test.txt

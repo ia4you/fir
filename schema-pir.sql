@@ -34,7 +34,8 @@ CREATE TABLE public.preguntas (
     explicacion text,
     imagen_path text,
     tema text,
-    explicacion_calidad text
+    explicacion_calidad text,
+    subtema text
 );
 
 CREATE SEQUENCE public.preguntas_id_seq
