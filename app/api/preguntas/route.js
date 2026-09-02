@@ -5,10 +5,12 @@ import { query } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-// Nº de preguntas del examen PIR real; objetivo del Simulacro completo.
-// TODO: heredado de EIR (206 preguntas) sin confirmar — el PIR real puede
-// tener un número distinto de preguntas por convocatoria.
-const TOTAL_SIMULACRO = 206;
+// Tamaño del Simulacro: no corresponde a ningún año real (el PIR ha tenido
+// entre 202 y 208 preguntas útiles según la convocatoria, 210 numeradas
+// menos anuladas). Se fija en 205 como muestra representativa, repartida
+// proporcionalmente por tema entre las 5 convocatorias disponibles (ver
+// generarSimulacro).
+const TOTAL_SIMULACRO = 205;
 
 // Reparte TOTAL_SIMULACRO preguntas entre temas según su peso medio
 // histórico (% que representa cada tema en cada convocatoria disponible,
