@@ -55,6 +55,7 @@ export default function Configuracion() {
 
   const [modoTest, setModoTest] = useState("practica"); // "practica" | "simulacro"
   const [tema, setTema] = useState("");
+  const [temasDisponibles, setTemasDisponibles] = useState([]);
   const [anio, setAnio] = useState("");
   const [cantidad, setCantidad] = useState("20");
   const [temporizadorActivo, setTemporizadorActivo] = useState(
@@ -80,6 +81,13 @@ export default function Configuracion() {
       })
       .catch(() => setRestanteHoy(LIMITE_DIARIO_FREE));
   }, [session]);
+
+  useEffect(() => {
+    fetch("/api/temas")
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((datos) => setTemasDisponibles(datos))
+      .catch((err) => console.error("No se pudieron cargar los temas", err));
+  }, []);
 
   // si la opción seleccionada deja de caber en lo que queda del día, bajamos
   // automáticamente a la mayor que sí quepa
@@ -256,13 +264,14 @@ export default function Configuracion() {
         {modoTest === "practica" && (
           <>
             <FieldCard label="Tema">
-              <input
-                type="text"
-                value={tema}
-                onChange={(e) => setTema(e.target.value)}
-                placeholder="Todos los temas — escribe para filtrar"
-                className="h-12 w-full rounded-xl border border-track bg-card px-4 font-semibold text-ink placeholder:font-normal placeholder:text-ink-muted focus:border-brand focus:outline-none"
-              />
+              <SelectNativo value={tema} onChange={(e) => setTema(e.target.value)}>
+                <option value="">Todos los temas</option>
+                {temasDisponibles.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </SelectNativo>
             </FieldCard>
 
             <FieldCard label="Año">
