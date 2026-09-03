@@ -1,38 +1,26 @@
 import { query } from "@/lib/db";
 
-// Slug URL-safe a partir del nombre de tema tal cual está en BD: minúsculas,
-// sin tildes/ñ, cualquier separador (espacios, guiones ya existentes como en
-// "Categoría - Subtema") colapsado a un único guion medio. No se persiste en
-// BD -- se deriva aquí y en el sitemap con la misma función, así que un slug
-// de URL siempre resuelve al mismo tema mientras esta función no cambie.
-export function slugifyTema(tema) {
-  return tema
-    .replace(/ñ/g, "n")
-    .replace(/Ñ/g, "N")
-    .normalize("NFKD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "");
-}
+// Todo lee de la tabla `temas` (slug, tema, intro, num_preguntas), ya
+// poblada con contenido real y única fuente de verdad para /temas,
+// /temas/[slug] y sitemap.js.
 
-// Único punto de verdad para "qué temas existen": agrupa por tema real de
-// preguntas y calcula el slug de cada uno. /temas, /temas/[slug] y el
-// sitemap parten todos de aquí para no desincronizarse.
-export async function getTemasConConteo() {
+export async function getTemasIndice() {
   const { rows } = await query(
-    `SELECT tema, COUNT(*)::int AS n
-     FROM preguntas
-     GROUP BY tema
-     ORDER BY n DESC, tema ASC`
+    `SELECT slug, tema, num_preguntas
+     FROM temas
+     ORDER BY num_preguntas DESC, tema ASC`
   );
-  return rows.map((r) => ({ tema: r.tema, n: r.n, slug: slugifyTema(r.tema) }));
+  return rows;
 }
 
-export async function getTemaPorSlug(slug) {
-  const temas = await getTemasConConteo();
-  return temas.find((t) => t.slug === slug) || null;
+export async function getTemaDetallePorSlug(slug) {
+  const { rows } = await query(
+    `SELECT slug, tema, intro, num_preguntas
+     FROM temas
+     WHERE slug = $1`,
+    [slug]
+  );
+  return rows[0] || null;
 }
 
 // Vista previa pública: solo enunciado + opciones, nunca `correcta` ni

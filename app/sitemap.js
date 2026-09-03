@@ -1,5 +1,4 @@
 import { query } from "@/lib/db";
-import { getTemasConConteo } from "./lib/temas";
 
 const BASE_URL = "https://pir.turel.es";
 
@@ -17,10 +16,18 @@ async function getPostsBlogParaSitemap() {
   return rows;
 }
 
+// Lee directamente de la tabla temas (slug + created_at, no tiene
+// updated_at) en vez de recalcular con GROUP BY sobre preguntas: es la
+// misma fuente de verdad que ya sirve /temas y /temas/[slug].
+async function getTemasParaSitemap() {
+  const { rows } = await query(`SELECT slug, created_at FROM temas`);
+  return rows;
+}
+
 export default async function sitemap() {
   const [postsBlog, temas] = await Promise.all([
     getPostsBlogParaSitemap(),
-    getTemasConConteo(),
+    getTemasParaSitemap(),
   ]);
 
   const estaticas = [
@@ -46,6 +53,7 @@ export default async function sitemap() {
     url: `${BASE_URL}/temas/${t.slug}`,
     priority: 0.7,
     changeFrequency: "monthly",
+    lastModified: t.created_at,
   }));
 
   return [...estaticas, ...blogUrls, ...temaUrls].map((entry) => ({

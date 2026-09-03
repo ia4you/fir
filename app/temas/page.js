@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getTemasConConteo } from "../lib/temas";
+import { getTemasIndice } from "../lib/temas";
 import BlogHeader from "../components/BlogHeader";
 import Footer from "../components/Footer";
 
@@ -13,7 +13,7 @@ export const metadata = {
 };
 
 export default async function TemasIndex() {
-  const temas = await getTemasConConteo();
+  const temas = await getTemasIndice();
 
   return (
     <div className="min-h-screen bg-surface">
@@ -34,7 +34,7 @@ export default async function TemasIndex() {
             >
               <span className="font-bold text-ink">{t.tema}</span>
               <span className="flex-shrink-0 rounded-full bg-brand-light px-3 py-1 text-xs font-bold text-brand">
-                {t.n} preguntas
+                {t.num_preguntas} preguntas
               </span>
             </Link>
           ))}

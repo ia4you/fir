@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getTemaPorSlug, getPreguntasMuestra } from "../../lib/temas";
+import { getTemaDetallePorSlug, getPreguntasMuestra } from "../../lib/temas";
 import BlogHeader from "../../components/BlogHeader";
 import Footer from "../../components/Footer";
 
@@ -8,16 +8,21 @@ export const dynamic = "force-dynamic";
 
 const LETRAS = ["A", "B", "C", "D", "E"];
 
+// Meta description ideal ronda 150-160 caracteres; el intro real son 3-4
+// frases (~500-650 caracteres) pensadas para el cuerpo de la página, no
+// para esto -- se resume cortando en el último espacio antes del límite.
+function resumirDescription(intro, max = 155) {
+  if (intro.length <= max) return intro;
+  const corte = intro.slice(0, max).lastIndexOf(" ");
+  return intro.slice(0, corte > 0 ? corte : max).trimEnd() + "…";
+}
+
 export async function generateMetadata({ params }) {
-  const tema = await getTemaPorSlug(params.slug);
+  const tema = await getTemaDetallePorSlug(params.slug);
   if (!tema) return {};
 
-  // TODO(temas-groq): title/description son placeholder de longitud
-  // realista -- se sustituyen por el texto generado con Groq (mismo
-  // patrón que preguntas.explicacion) en el siguiente paso, tras aprobar
-  // este esqueleto.
   const title = `${tema.tema} — Preguntas PIR | PIR Turel`;
-  const description = `Practica ${tema.n} preguntas oficiales de ${tema.tema} de las convocatorias PIR 2021-2025, verificadas contra las plantillas del Ministerio de Sanidad.`;
+  const description = resumirDescription(tema.intro);
 
   return {
     title,
@@ -28,7 +33,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function TemaPage({ params }) {
-  const tema = await getTemaPorSlug(params.slug);
+  const tema = await getTemaDetallePorSlug(params.slug);
   if (!tema) notFound();
 
   const muestra = await getPreguntasMuestra(tema.tema, 3);
@@ -46,17 +51,10 @@ export default async function TemaPage({ params }) {
         </h1>
 
         <p className="mt-2 text-sm font-semibold text-ink-muted">
-          {tema.n} preguntas de las convocatorias 2021-2025
+          {tema.num_preguntas} preguntas de las convocatorias 2021-2025
         </p>
 
-        {/* TODO(temas-groq): placeholder de 2-3 frases -- se sustituye por
-            el texto generado con Groq, longitud similar. */}
-        <p className="mt-5 text-base leading-relaxed text-ink">
-          Repasa el bloque de {tema.tema} del examen PIR con preguntas reales de las
-          convocatorias 2021 a 2025. Cada pregunta ha sido verificada contra la plantilla
-          oficial del Ministerio de Sanidad, con respuesta correcta y explicación clínica
-          disponibles al practicar.
-        </p>
+        <p className="mt-5 text-base leading-relaxed text-ink">{tema.intro}</p>
 
         <Link
           href="/registro"
