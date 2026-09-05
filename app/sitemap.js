@@ -19,9 +19,18 @@ async function getPostsBlogParaSitemap() {
 // Lee directamente de la tabla temas (slug + created_at, no tiene
 // updated_at) en vez de recalcular con GROUP BY sobre preguntas: es la
 // misma fuente de verdad que ya sirve /temas y /temas/[slug].
+//
+// Guarda defensiva: FIR todavía no tiene esta tabla creada (pendiente de
+// la clasificación por tema) — sin esto, un sitemap.xml roto tumbaría la
+// indexación SEO de todo el sitio, no solo de /temas.
 async function getTemasParaSitemap() {
-  const { rows } = await query(`SELECT slug, created_at FROM temas`);
-  return rows;
+  try {
+    const { rows } = await query(`SELECT slug, created_at FROM temas`);
+    return rows;
+  } catch (err) {
+    if (err.code === "42P01") return [];
+    throw err;
+  }
 }
 
 export default async function sitemap() {

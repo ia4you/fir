@@ -3,24 +3,42 @@ import { query } from "@/lib/db";
 // Todo lee de la tabla `temas` (slug, tema, intro, num_preguntas), ya
 // poblada con contenido real y única fuente de verdad para /temas,
 // /temas/[slug] y sitemap.js.
+//
+// Guarda defensiva: FIR todavía no tiene esta tabla creada (pendiente de
+// la clasificación por tema, ver Fase 4). Mientras tanto estas funciones
+// devuelven "sin temas" en vez de reventar /temas, /temas/[slug] y
+// sitemap.js con un 500.
+function esTablaInexistente(err) {
+  return err.code === "42P01"; // undefined_table
+}
 
 export async function getTemasIndice() {
-  const { rows } = await query(
-    `SELECT slug, tema, num_preguntas
-     FROM temas
-     ORDER BY num_preguntas DESC, tema ASC`
-  );
-  return rows;
+  try {
+    const { rows } = await query(
+      `SELECT slug, tema, num_preguntas
+       FROM temas
+       ORDER BY num_preguntas DESC, tema ASC`
+    );
+    return rows;
+  } catch (err) {
+    if (esTablaInexistente(err)) return [];
+    throw err;
+  }
 }
 
 export async function getTemaDetallePorSlug(slug) {
-  const { rows } = await query(
-    `SELECT slug, tema, intro, num_preguntas
-     FROM temas
-     WHERE slug = $1`,
-    [slug]
-  );
-  return rows[0] || null;
+  try {
+    const { rows } = await query(
+      `SELECT slug, tema, intro, num_preguntas
+       FROM temas
+       WHERE slug = $1`,
+      [slug]
+    );
+    return rows[0] || null;
+  } catch (err) {
+    if (esTablaInexistente(err)) return null;
+    throw err;
+  }
 }
 
 // Vista previa pública: solo enunciado + opciones, nunca `correcta` ni

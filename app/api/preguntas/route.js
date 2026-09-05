@@ -15,10 +15,14 @@ const TOTAL_SIMULACRO = 205;
 // histórico (% que representa cada tema en cada convocatoria disponible,
 // tratando como 0% los años en que no tuvo preguntas), con redondeo por
 // "mayor resto" para que la suma cuadre exacto.
+//
+// Guarda defensiva: pct_medio puede llegar NULL (ver NULLIF en la consulta
+// SQL de generarSimulacro) si algún año tuviera 0 preguntas en total —
+// se trata como 0% en vez de propagar NaN al reparto.
 function repartoPorMayorResto(pesos, total) {
   const crudos = pesos.map((p) => ({
     tema: p.tema,
-    exacto: (parseFloat(p.pct_medio) * total) / 100,
+    exacto: (parseFloat(p.pct_medio ?? 0) * total) / 100 || 0,
   }));
   let asignado = 0;
   const reparto = crudos.map((c) => {
@@ -64,7 +68,10 @@ async function generarSimulacro() {
          ),
          totales_año AS (SELECT año, SUM(num_preguntas) AS total FROM conteos GROUP BY año),
          pcts AS (
-           SELECT c.año, c.tema, c.num_preguntas * 100.0 / t.total AS pct
+           -- NULLIF evita división por cero si algún año llegara a tener 0
+           -- preguntas en total (p.ej. tabla vacía a medio cargar); el pct
+           -- de ese año queda NULL y repartoPorMayorResto ya lo trata como 0.
+           SELECT c.año, c.tema, c.num_preguntas * 100.0 / NULLIF(t.total, 0) AS pct
            FROM conteos c JOIN totales_año t ON t.año = c.año
          )
     SELECT tema, AVG(pct) AS pct_medio
@@ -73,6 +80,23 @@ async function generarSimulacro() {
   `);
 
   const reparto = repartoPorMayorResto(pesos, TOTAL_SIMULACRO);
+  const hayReparto = reparto.some((r) => r.cantidad > 0);
+
+  // Guarda defensiva: si no hay pesos (tabla vacía) o el reparto por tema
+  // no asignó nada (p.ej. todos los pct_medio quedaron NULL/0), no hay
+  // nada que agrupar por tema — se cae a una selección uniforme simple en
+  // vez de devolver un simulacro vacío o reventar.
+  if (pesos.length === 0 || !hayReparto) {
+    const { rows } = await query(
+      `SELECT id, año, numero, tema, pregunta,
+              opcion_a, opcion_b, opcion_c, opcion_d, opcion_e, imagen_path
+       FROM preguntas
+       ORDER BY RANDOM()
+       LIMIT $1`,
+      [TOTAL_SIMULACRO]
+    );
+    return rows;
+  }
 
   const porTema = await Promise.all(
     reparto
