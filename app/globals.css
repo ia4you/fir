@@ -12,7 +12,7 @@
   --ink-muted: #475569;
   --track: #e2e8f0;
   --panel: #f1f5f9;
-  --brand-light: #ede9fe;
+  --brand-light: #d1fae5;
 }
 
 /* Paleta oscura: fondo/superficie de app/globals.css. El teal de marca
@@ -24,14 +24,14 @@
   --ink-muted: #94a3b8;
   --track: #334155;
   --panel: #1e293b;
-  --brand-light: #4c1d95;
+  --brand-light: #064e3b;
 }
 
-/* text-brand/border-brand (#0f766e, #115e59) son deliberadamente oscuros
+/* text-brand/border-brand (#059669, #047857) son deliberadamente oscuros
    para que el texto blanco de los botones (bg-brand) contraste bien en
    ambos temas. Como texto/borde suelto sobre fondo oscuro (bg-surface,
    bg-card, o bg-brand-light oscuros) esos mismos tonos se quedan cortos de
-   contraste (~1.7-3.3:1, por debajo del mínimo 3:1 de WCAG para texto/UI).
+   contraste, por debajo del mínimo 3:1 de WCAG para texto/UI.
    Se sobreescribe aquí en vez de tocar los ~70 sitios que usan estas
    utilidades: cada selector es más específico que la utilidad de Tailwind
    correspondiente, así que gana sin depender del orden de las reglas. */
@@ -39,14 +39,14 @@
 :root.dark .hover\:text-brand:hover,
 :root.dark .group:hover .group-hover\:text-brand,
 :root.dark .active\:text-brand-dark:active {
-  color: #c4b5fd;
+  color: #6ee7b7;
 }
 :root.dark .border-brand,
 :root.dark .focus\:border-brand:focus {
-  border-color: #c4b5fd;
+  border-color: #6ee7b7;
 }
 :root.dark .focus\:ring-brand:focus {
-  --tw-ring-color: #c4b5fd;
+  --tw-ring-color: #6ee7b7;
 }
 
 body {

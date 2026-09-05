@@ -33,7 +33,7 @@ export async function generateMetadata() {
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#7c3aed",
+  themeColor: "#047857",
 };
 
 // El build de Dokploy corre sin acceso a mir-db (red de build aislada de la
@@ -169,50 +169,32 @@ export default async function LandingPage() {
         id="hero"
         className="relative overflow-hidden bg-[#140f2e] px-5 pt-10 pb-12 text-center sm:pt-14 sm:pb-16"
       >
-        <div className="mx-auto flex max-w-6xl items-center justify-center gap-4 lg:gap-8">
-          <Image
-            src="/landing/hero-izquierda.png"
-            alt="Ilustración de estudiante de Farmacia repasando el FIR"
-            width={420}
-            height={355}
-            className="hidden w-[120px] shrink-0 md:block lg:w-[240px] xl:w-[320px]"
-          />
+        <div className="mx-auto max-w-2xl">
+          <h1 className="text-4xl font-extrabold leading-tight text-white sm:text-5xl">
+            Te hacemos mejor respondiendo preguntas FIR
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl text-white/80 sm:text-lg">
+            Preguntas FIR oficiales. Respuestas verificadas. Controversias documentadas.
+          </p>
 
-          <div className="min-w-0 max-w-2xl flex-1">
-            <h1 className="text-4xl font-extrabold leading-tight text-white sm:text-5xl">
-              Te hacemos mejor respondiendo preguntas FIR
-            </h1>
-            <p className="mx-auto mt-4 max-w-xl text-white/80 sm:text-lg">
-              Preguntas FIR oficiales. Respuestas verificadas. Controversias documentadas.
-            </p>
-
-            <div className="mx-auto mt-7 flex max-w-xs flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center">
-              <Link
-                href="/demo"
-                className="flex h-14 items-center justify-center rounded-2xl bg-brand px-8 text-lg font-bold text-white shadow-sm active:bg-brand-dark"
-              >
-                Empezar gratis
-              </Link>
-              <a
-                href="#como-funciona"
-                className="flex h-14 items-center justify-center rounded-2xl border-2 border-brand px-8 text-lg font-bold text-brand"
-              >
-                Ver cómo funciona
-              </a>
-            </div>
-
-            <p className="mx-auto mt-8 max-w-2xl text-sm font-semibold text-white/60">
-              {textoHero}
-            </p>
+          <div className="mx-auto mt-7 flex max-w-xs flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center">
+            <Link
+              href="/demo"
+              className="flex h-14 items-center justify-center rounded-2xl bg-brand px-8 text-lg font-bold text-white shadow-sm active:bg-brand-dark"
+            >
+              Empezar gratis
+            </Link>
+            <a
+              href="#como-funciona"
+              className="flex h-14 items-center justify-center rounded-2xl border-2 border-brand px-8 text-lg font-bold text-brand"
+            >
+              Ver cómo funciona
+            </a>
           </div>
 
-          <Image
-            src="/landing/hero-derecha.png"
-            alt="Ilustración de estudiante de Farmacia repasando el FIR"
-            width={420}
-            height={355}
-            className="hidden w-[120px] shrink-0 md:block lg:w-[240px] xl:w-[320px]"
-          />
+          <p className="mx-auto mt-8 max-w-2xl text-sm font-semibold text-white/60">
+            {textoHero}
+          </p>
         </div>
       </section>
 

@@ -11,15 +11,15 @@ module.exports = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        // Rebrand 2026-08: violeta/morado + teal como acento (antes
-        // turquesa/teal + azul marino). surface/track/ink/panel/brand.light
+        // Rebrand 2026-09: verde esmeralda + teal como acento (antes
+        // violeta/morado + teal). surface/track/ink/panel/brand.light
         // están atados a variables CSS (ver globals.css) para poder tener
         // modo oscuro; brand.DEFAULT/dark/accent quedan fijos a propósito,
         // son iguales en ambos modos.
         brand: {
-          DEFAULT: "#7c3aed", // botones primarios, acentos, nav activo (violet-600, 5.7:1 con texto blanco, AA)
+          DEFAULT: "#047857", // botones primarios, acentos, nav activo (emerald-700, 5.5:1 con texto blanco, AA)
           light: "var(--brand-light)", // tarjeta "días seguidos", opción seleccionada
-          dark: "#6d28d9", // hover/estados pulsados (violet-700, 7.1:1 con texto blanco, AAA)
+          dark: "#065f46", // hover/estados pulsados (emerald-800, 7.7:1 con texto blanco, AAA)
           accent: "#14b8a6", // iconos/decorativo grande sin texto encima (teal-500)
         },
         surface: "var(--surface)", // fondo de página
