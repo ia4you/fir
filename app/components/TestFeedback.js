@@ -133,17 +133,21 @@ export default function TestFeedback({
         </div>
       )}
 
-      {/* CTA principal */}
-      <div className="border-t border-track px-6 py-4">
-        <button
-          type="button"
-          onClick={onSiguiente}
-          className="flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-brand text-lg font-bold text-white shadow-sm active:bg-brand-dark"
-        >
-          {siguienteLabel}
-          <IconArrowRight />
-        </button>
-      </div>
+      {/* CTA principal — omitible: la demo, en la última pregunta, muestra
+          en su lugar un CTA de registro fuera de la tarjeta (onSiguiente
+          no se pasa en ese caso). */}
+      {onSiguiente && (
+        <div className="border-t border-track px-6 py-4">
+          <button
+            type="button"
+            onClick={onSiguiente}
+            className="flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-brand text-lg font-bold text-white shadow-sm active:bg-brand-dark"
+          >
+            {siguienteLabel}
+            <IconArrowRight />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import OptionCard from "../../components/OptionCard";
 import Footer from "../../components/Footer";
+import TestFeedback from "../../components/TestFeedback";
 
 const LETRAS = ["A", "B", "C", "D", "E"];
 
@@ -250,133 +251,171 @@ export default function DemoClient({ totalPreguntas }) {
           }}
         >
           <div className="flex-1 overflow-y-auto px-5 pb-6 pt-safe">
-            <div className="flex items-center justify-between gap-3 pt-2">
-              <div className="flex items-center gap-3">
-                <span
-                  className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-white ${
-                    resultado.correcta ? "bg-success" : "bg-danger"
-                  }`}
-                >
-                  {resultado.correcta ? (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="h-6 w-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="m5 13 4 4 10-10" />
-                    </svg>
-                  ) : (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="h-6 w-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6 6 18" />
-                    </svg>
+            {resultado.explicacion && resultado.explicacion_calidad !== "controversia" ? (
+              // Caso normal: tarjeta rediseñada (TestFeedback, mismo diseño
+              // que mir). Controversia y sin_imagen/no-disponible siguen con
+              // el markup propio de la demo, sin tocar, fuera del componente.
+              // Sin tutor IA: la demo es para visitantes sin cuenta.
+              <>
+                {!esUltima && (
+                  <div className="flex justify-end pt-2">
+                    <button
+                      type="button"
+                      onClick={cerrarExplicacion}
+                      aria-label="Cerrar explicación"
+                      className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-card text-ink shadow-sm"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6 6 18" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
+                <div className="mt-2 flex justify-center">
+                  <TestFeedback
+                    correcta={resultado.correcta}
+                    seleccionada={seleccionada}
+                    textoSeleccionada={preguntaActual[`opcion_${seleccionada.toLowerCase()}`]}
+                    respuestaCorrectaLetra={resultado.respuesta_correcta}
+                    respuestaCorrectaTexto={
+                      preguntaActual[`opcion_${String(resultado.respuesta_correcta).toLowerCase()}`]
+                    }
+                    explicacion={resultado.explicacion}
+                    onSiguiente={esUltima ? undefined : siguientePregunta}
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex items-center justify-between gap-3 pt-2">
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-white ${
+                        resultado.correcta ? "bg-success" : "bg-danger"
+                      }`}
+                    >
+                      {resultado.correcta ? (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="h-6 w-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="m5 13 4 4 10-10" />
+                        </svg>
+                      ) : (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="h-6 w-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6 6 18" />
+                        </svg>
+                      )}
+                    </span>
+                    <p
+                      className={`text-2xl font-extrabold ${
+                        resultado.correcta ? "text-success-text" : "text-danger-text"
+                      }`}
+                    >
+                      {resultado.correcta ? "CORRECTO" : "INCORRECTO"}
+                    </p>
+                  </div>
+                  {!esUltima && (
+                    <button
+                      type="button"
+                      onClick={cerrarExplicacion}
+                      aria-label="Cerrar explicación"
+                      className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-card shadow-sm"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4 text-ink">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6 6 18" />
+                      </svg>
+                    </button>
                   )}
-                </span>
-                <p
-                  className={`text-2xl font-extrabold ${
-                    resultado.correcta ? "text-success-text" : "text-danger-text"
-                  }`}
-                >
-                  {resultado.correcta ? "CORRECTO" : "INCORRECTO"}
-                </p>
-              </div>
-              {!esUltima && (
+                </div>
+
+                <div className="mt-5 flex flex-col gap-2 text-ink">
+                  <p>
+                    <span className="font-bold">Respondiste: </span>
+                    {seleccionada} — {preguntaActual[`opcion_${seleccionada.toLowerCase()}`]}
+                  </p>
+                  {!resultado.correcta && (
+                    <p>
+                      <span className="font-bold">Respuesta correcta: </span>
+                      {resultado.respuesta_correcta} —{" "}
+                      {preguntaActual[`opcion_${String(resultado.respuesta_correcta).toLowerCase()}`]}
+                    </p>
+                  )}
+                </div>
+
+                <hr className="my-5 border-track" />
+
+                <div>
+                  <p className="mb-2 text-xs font-bold uppercase tracking-wide text-ink-muted">
+                    Explicación
+                  </p>
+                  {resultado.explicacion ? (
+                    // Solo se llega aquí con explicacion_calidad === "controversia"
+                    // (el caso sin controversia ya se sirve con la tarjeta de arriba).
+                    <div className="flex flex-col items-start gap-2">
+                      <span className="rounded-full bg-danger-bg px-3 py-1 text-xs font-bold text-danger-text">
+                        ⚠️ Respuesta oficial cuestionada
+                      </span>
+                      <p className="text-sm leading-relaxed text-ink">{resultado.explicacion}</p>
+                      <Link href="/controversias" target="_blank" className="text-sm font-bold text-brand">
+                        Ver /controversias →
+                      </Link>
+                    </div>
+                  ) : resultado.explicacion_calidad === "sin_imagen" ? (
+                    <div className="flex flex-col items-start gap-2">
+                      <span className="flex items-center gap-1.5 rounded-full bg-track px-3 py-1 text-xs font-bold text-ink-muted">
+                        🖼️ Sin imagen disponible
+                      </span>
+                      <p className="text-sm leading-relaxed text-ink-muted">
+                        Esta pregunta hace referencia a una imagen clínica del examen original.
+                        Explicación no disponible.
+                      </p>
+                    </div>
+                  ) : resultado.explicacion_calidad === "controversia" ? (
+                    <div className="flex flex-col items-start gap-2">
+                      <span className="flex items-center gap-1.5 rounded-full bg-danger-bg px-3 py-1 text-xs font-bold text-danger-text">
+                        ⚠️ Respuesta cuestionada
+                      </span>
+                      <p className="text-sm leading-relaxed text-ink-muted">
+                        La respuesta oficial de esta pregunta ha sido cuestionada.{" "}
+                        <Link href="/controversias" target="_blank" className="font-bold text-brand">
+                          Ver /controversias
+                        </Link>
+                        .
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-start gap-2">
+                      <span className="flex items-center gap-1.5 rounded-full bg-track px-3 py-1 text-xs font-bold text-ink-muted">
+                        📚 No disponible
+                      </span>
+                      <p className="text-sm leading-relaxed text-ink-muted">
+                        Explicación no disponible para esta pregunta.
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {esUltima && <hr className="my-5 border-track" />}
+              </>
+            )}
+          </div>
+
+          {(esUltima || !(resultado.explicacion && resultado.explicacion_calidad !== "controversia")) && (
+            <div className="border-t border-track px-5 py-4 pb-safe">
+              {esUltima ? (
+                cta
+              ) : (
                 <button
                   type="button"
-                  onClick={cerrarExplicacion}
-                  aria-label="Cerrar explicación"
-                  className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-card shadow-sm"
+                  onClick={siguientePregunta}
+                  className="flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-brand text-lg font-bold text-white shadow-sm active:bg-brand-dark"
                 >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4 text-ink">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6 6 18" />
+                  Siguiente pregunta
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="h-5 w-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" />
                   </svg>
                 </button>
               )}
             </div>
-
-            <div className="mt-5 flex flex-col gap-2 text-ink">
-              <p>
-                <span className="font-bold">Respondiste: </span>
-                {seleccionada} — {preguntaActual[`opcion_${seleccionada.toLowerCase()}`]}
-              </p>
-              {!resultado.correcta && (
-                <p>
-                  <span className="font-bold">Respuesta correcta: </span>
-                  {resultado.respuesta_correcta} —{" "}
-                  {preguntaActual[`opcion_${String(resultado.respuesta_correcta).toLowerCase()}`]}
-                </p>
-              )}
-            </div>
-
-            <hr className="my-5 border-track" />
-
-            <div>
-              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-ink-muted">
-                Explicación
-              </p>
-              {resultado.explicacion ? (
-                <div className="flex flex-col items-start gap-2">
-                  {resultado.explicacion_calidad === "controversia" && (
-                    <span className="rounded-full bg-danger-bg px-3 py-1 text-xs font-bold text-danger-text">
-                      ⚠️ Respuesta oficial cuestionada
-                    </span>
-                  )}
-                  <p className="text-sm leading-relaxed text-ink">{resultado.explicacion}</p>
-                  {resultado.explicacion_calidad === "controversia" && (
-                    <Link href="/controversias" target="_blank" className="text-sm font-bold text-brand">
-                      Ver /controversias →
-                    </Link>
-                  )}
-                </div>
-              ) : resultado.explicacion_calidad === "sin_imagen" ? (
-                <div className="flex flex-col items-start gap-2">
-                  <span className="flex items-center gap-1.5 rounded-full bg-track px-3 py-1 text-xs font-bold text-ink-muted">
-                    🖼️ Sin imagen disponible
-                  </span>
-                  <p className="text-sm leading-relaxed text-ink-muted">
-                    Esta pregunta hace referencia a una imagen clínica del examen original.
-                    Explicación no disponible.
-                  </p>
-                </div>
-              ) : resultado.explicacion_calidad === "controversia" ? (
-                <div className="flex flex-col items-start gap-2">
-                  <span className="flex items-center gap-1.5 rounded-full bg-danger-bg px-3 py-1 text-xs font-bold text-danger-text">
-                    ⚠️ Respuesta cuestionada
-                  </span>
-                  <p className="text-sm leading-relaxed text-ink-muted">
-                    La respuesta oficial de esta pregunta ha sido cuestionada.{" "}
-                    <Link href="/controversias" target="_blank" className="font-bold text-brand">
-                      Ver /controversias
-                    </Link>
-                    .
-                  </p>
-                </div>
-              ) : (
-                <div className="flex flex-col items-start gap-2">
-                  <span className="flex items-center gap-1.5 rounded-full bg-track px-3 py-1 text-xs font-bold text-ink-muted">
-                    📚 No disponible
-                  </span>
-                  <p className="text-sm leading-relaxed text-ink-muted">
-                    Explicación no disponible para esta pregunta.
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {esUltima && <hr className="my-5 border-track" />}
-          </div>
-
-          <div className="border-t border-track px-5 py-4 pb-safe">
-            {esUltima ? (
-              cta
-            ) : (
-              <button
-                type="button"
-                onClick={siguientePregunta}
-                className="flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-brand text-lg font-bold text-white shadow-sm active:bg-brand-dark"
-              >
-                Siguiente pregunta
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="h-5 w-5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" />
-                </svg>
-              </button>
-            )}
-          </div>
+          )}
         </div>
       )}
 
