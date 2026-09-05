@@ -11,23 +11,23 @@ if (!GROQ_API_KEY) {
 }
 
 const pool = new pg.Pool({
-  user: process.env.POSTGRES_USER || "pir",
+  user: process.env.POSTGRES_USER || "fir",
   password: process.env.POSTGRES_PASSWORD,
-  database: process.env.POSTGRES_DB || "pir",
+  database: process.env.POSTGRES_DB || "fir",
   host: process.env.POSTGRES_HOST || "localhost",
   port: process.env.POSTGRES_PORT || 5432,
 });
 
-const SYSTEM_PROMPT = `Eres un experto en Psicología Clínica y opositor al examen PIR.
-Vas a recibir una pregunta tipo test del examen PIR, sus opciones, y cuál es
+const SYSTEM_PROMPT = `Eres un experto en Farmacia y opositor al examen FIR.
+Vas a recibir una pregunta tipo test del examen FIR, sus opciones, y cuál es
 la letra correcta según la plantilla oficial. Escribe una explicación en
 español, en un ÚNICO PÁRRAFO (sin títulos, sin markdown, sin saltos de
 línea), que:
-1. Explique por qué la opción correcta lo es, con razonamiento clínico o
-   teórico específico (no te limites a repetir el enunciado).
+1. Explique por qué la opción correcta lo es, con razonamiento farmacológico
+   o técnico específico (no te limites a repetir el enunciado).
 2. Cierre el mismo párrafo indicando brevemente por qué las demás opciones
    son incorrectas, agrupándolas si comparten el mismo motivo de error.
-Tono técnico, preciso, como el de un manual de psicopatología. No uses la
+Tono técnico, preciso, como el de un manual de farmacología. No uses la
 palabra "correcta" más de una vez. No inventes datos, cifras o referencias
 que no estén implícitas en la propia pregunta.`;
 
