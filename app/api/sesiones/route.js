@@ -60,7 +60,7 @@ export async function POST(request) {
   const userId = session.user.id;
 
   try {
-    // El simulacro PIR completo (200+ preguntas de golpe) es función premium
+    // El simulacro FIR completo (200+ preguntas de golpe) es función premium
     // explícita: el límite diario de abajo no lo cubriría (solo cuenta
     // sesiones YA completadas, así que un usuario free podría crear una
     // sesión de simulacro entera antes de toparse con el límite).
@@ -68,7 +68,7 @@ export async function POST(request) {
       return NextResponse.json(
         {
           error: "premium_requerido",
-          message: "El simulacro PIR completo es una función premium.",
+          message: "El simulacro FIR completo es una función premium.",
         },
         { status: 403 }
       );

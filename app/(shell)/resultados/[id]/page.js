@@ -131,7 +131,7 @@ export default function Resultados({ params }) {
         <section className="mt-6 px-5">
           <div className="rounded-2xl bg-card p-4 shadow-sm">
             <p className="text-sm font-bold uppercase tracking-wide text-ink-muted">
-              Resultado del Simulacro PIR {datos.simulacro.anio}
+              Resultado del Simulacro FIR {datos.simulacro.anio}
             </p>
             <p className="mt-2 text-3xl font-extrabold text-ink">
               {datos.simulacro.puntuacion.toFixed(2)}{" "}

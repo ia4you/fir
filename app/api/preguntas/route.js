@@ -5,11 +5,10 @@ import { query } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-// Tamaño del Simulacro: no corresponde a ningún año real (el PIR ha tenido
-// entre 202 y 208 preguntas útiles según la convocatoria, 210 numeradas
-// menos anuladas). Se fija en 205 como muestra representativa, repartida
-// proporcionalmente por tema entre las 5 convocatorias disponibles (ver
-// generarSimulacro).
+// Tamaño del Simulacro: valor heredado de pir (basado en sus 5 convocatorias
+// de Psicología, entre 202 y 208 preguntas útiles). Pendiente de recalcular
+// con las 5 convocatorias reales de Farmacia en cuanto se cargue la ingesta
+// de FIR (ver Fase 4) — 205 es solo un placeholder de partida.
 const TOTAL_SIMULACRO = 205;
 
 // Reparte TOTAL_SIMULACRO preguntas entre temas según su peso medio

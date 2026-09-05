@@ -1,6 +1,6 @@
 {
-  "name": "PIR Turel",
-  "short_name": "PIR",
+  "name": "FIR Turel",
+  "short_name": "FIR",
   "start_url": "/inicio",
   "display": "standalone",
   "background_color": "#0f766e",

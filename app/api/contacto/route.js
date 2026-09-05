@@ -54,7 +54,7 @@ export async function POST(request) {
     await mailer.sendMail({
       from: process.env.SMTP_FROM,
       to: process.env.SMTP_TO,
-      subject: `Nuevo mensaje en PIR Turel — ${tipo}`,
+      subject: `Nuevo mensaje en FIR Turel — ${tipo}`,
       text: [
         `Nombre: ${nombre}`,
         `Email: ${email}`,
@@ -62,7 +62,7 @@ export async function POST(request) {
         `Mensaje: ${mensaje}`,
         `Fecha: ${fila.created_at.toISOString()}`,
         "",
-        "Ver todos los mensajes en: https://pir.turel.es/admin/contacto",
+        "Ver todos los mensajes en: https://fir.turel.es/admin/contacto",
       ].join("\n"),
     });
   } catch (err) {

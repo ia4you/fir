@@ -2,10 +2,10 @@ import Link from "next/link";
 import Footer from "../components/Footer";
 
 export const metadata = {
-  title: "Política de Privacidad — PIR Turel",
+  title: "Política de Privacidad — FIR Turel",
   description:
-    "Política de privacidad de PIR Turel: qué datos recogemos (email, nombre, progreso de estudio), para qué los usamos, con quién los compartimos y cómo eliminar tu cuenta.",
-  alternates: { canonical: "https://pir.turel.es/privacidad" },
+    "Política de privacidad de FIR Turel: qué datos recogemos (email, nombre, progreso de estudio), para qué los usamos, con quién los compartimos y cómo eliminar tu cuenta.",
+  alternates: { canonical: "https://fir.turel.es/privacidad" },
 };
 
 export default function PrivacidadPage() {
@@ -25,7 +25,7 @@ export default function PrivacidadPage() {
           <section>
             <h2 className="text-lg font-bold text-ink">Responsable del tratamiento</h2>
             <p className="mt-2">
-              PIR Turel (pir.turel.es) es una plataforma operada por José. Para cualquier
+              FIR Turel (fir.turel.es) es una plataforma operada por José. Para cualquier
               cuestión sobre esta política o sobre tus datos personales, puedes escribir a{" "}
               <a href="mailto:jose@turel.es" className="font-semibold text-brand">
                 jose@turel.es
@@ -52,7 +52,7 @@ export default function PrivacidadPage() {
               </li>
               <li>
                 <span className="font-semibold text-ink">Datos de pago:</span> si contratas el
-                plan Premium, tu email se comparte con Stripe para procesar el cobro. PIR Turel
+                plan Premium, tu email se comparte con Stripe para procesar el cobro. FIR Turel
                 no almacena en ningún momento los datos de tu tarjeta.
               </li>
               <li>
@@ -94,7 +94,7 @@ export default function PrivacidadPage() {
             <ul className="mt-2 flex list-disc flex-col gap-1 pl-5">
               <li>
                 <span className="font-semibold text-ink">Stripe</span> — procesa los pagos del
-                plan Premium. Recibe tu email y los datos de tu tarjeta directamente; PIR Turel
+                plan Premium. Recibe tu email y los datos de tu tarjeta directamente; FIR Turel
                 nunca ve ni guarda el número de tu tarjeta.
               </li>
               <li>

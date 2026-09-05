@@ -30,12 +30,12 @@ export async function POST(request) {
     await mailer.sendMail({
       from: process.env.SMTP_FROM,
       to: "jose@turel.es",
-      subject: "Nueva solicitud de eliminación de cuenta — PIR Turel",
+      subject: "Nueva solicitud de eliminación de cuenta — FIR Turel",
       text: [
         `Email: ${email}`,
         `Fecha: ${fila.created_at.toISOString()}`,
         "",
-        "Ver todas las solicitudes en: https://pir.turel.es/admin/eliminacion-cuenta",
+        "Ver todas las solicitudes en: https://fir.turel.es/admin/eliminacion-cuenta",
       ].join("\n"),
     });
   } catch (err) {

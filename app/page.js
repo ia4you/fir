@@ -10,22 +10,22 @@ export async function generateMetadata() {
   const hayDatos = totalPreguntas > 0;
 
   const description = hayDatos
-    ? `Prepara el PIR con ${totalPreguntas.toLocaleString("es-ES")} preguntas oficiales verificadas de Sanidad. Practica por tema, simulacros y repasa tus fallos gratis.`
-    : "Prepara el PIR con preguntas oficiales de convocatorias anteriores, verificadas de Sanidad. Practica por tema, simulacros y repasa tus fallos gratis.";
+    ? `Prepara el FIR con ${totalPreguntas.toLocaleString("es-ES")} preguntas oficiales verificadas de Sanidad. Practica por tema, simulacros y repasa tus fallos gratis.`
+    : "Prepara el FIR con preguntas oficiales de convocatorias anteriores, verificadas de Sanidad. Practica por tema, simulacros y repasa tus fallos gratis.";
 
   const descriptionOg = hayDatos
     ? `${totalPreguntas.toLocaleString("es-ES")} preguntas reales verificadas. Gratis.`
     : "Preguntas reales verificadas. Gratis.";
 
   return {
-    title: "Prepara el PIR con preguntas oficiales | PIR Turel",
+    title: "Prepara el FIR con preguntas oficiales | FIR Turel",
     description,
-    alternates: { canonical: "https://pir.turel.es" },
+    alternates: { canonical: "https://fir.turel.es" },
     openGraph: {
-      title: "PIR Turel — Banco de preguntas oficiales PIR",
+      title: "FIR Turel — Banco de preguntas oficiales FIR",
       description: descriptionOg,
-      url: "https://pir.turel.es",
-      siteName: "PIR Turel",
+      url: "https://fir.turel.es",
+      siteName: "FIR Turel",
     },
   };
 }
@@ -115,16 +115,16 @@ export default async function LandingPage() {
   const schemaOrganizacion = {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
-    name: "PIR Turel",
-    url: "https://pir.turel.es",
+    name: "FIR Turel",
+    url: "https://fir.turel.es",
     description: hayDatos
-      ? `Plataforma de preparación del examen PIR con ${totalPreguntas.toLocaleString("es-ES")} preguntas oficiales de convocatorias anteriores del Ministerio de Sanidad.`
-      : "Plataforma de preparación del examen PIR con preguntas oficiales de convocatorias anteriores del Ministerio de Sanidad.",
-    educationalCredentialAwarded: "Psicólogo Interno Residente (PIR)",
+      ? `Plataforma de preparación del examen FIR con ${totalPreguntas.toLocaleString("es-ES")} preguntas oficiales de convocatorias anteriores del Ministerio de Sanidad.`
+      : "Plataforma de preparación del examen FIR con preguntas oficiales de convocatorias anteriores del Ministerio de Sanidad.",
+    educationalCredentialAwarded: "Farmacéutico Interno Residente (FIR)",
     provider: {
       "@type": "Organization",
-      name: "PIR Turel",
-      url: "https://pir.turel.es",
+      name: "FIR Turel",
+      url: "https://fir.turel.es",
     },
   };
 
@@ -172,7 +172,7 @@ export default async function LandingPage() {
         <div className="mx-auto flex max-w-6xl items-center justify-center gap-4 lg:gap-8">
           <Image
             src="/landing/hero-izquierda.png"
-            alt="Ilustración de estudiante de Psicología repasando el PIR"
+            alt="Ilustración de estudiante de Farmacia repasando el FIR"
             width={420}
             height={355}
             className="hidden w-[120px] shrink-0 md:block lg:w-[240px] xl:w-[320px]"
@@ -180,10 +180,10 @@ export default async function LandingPage() {
 
           <div className="min-w-0 max-w-2xl flex-1">
             <h1 className="text-4xl font-extrabold leading-tight text-white sm:text-5xl">
-              Te hacemos mejor respondiendo preguntas PIR
+              Te hacemos mejor respondiendo preguntas FIR
             </h1>
             <p className="mx-auto mt-4 max-w-xl text-white/80 sm:text-lg">
-              Preguntas PIR oficiales. Respuestas verificadas. Controversias documentadas.
+              Preguntas FIR oficiales. Respuestas verificadas. Controversias documentadas.
             </p>
 
             <div className="mx-auto mt-7 flex max-w-xs flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center">
@@ -208,7 +208,7 @@ export default async function LandingPage() {
 
           <Image
             src="/landing/hero-derecha.png"
-            alt="Ilustración de estudiante de Psicología repasando el PIR"
+            alt="Ilustración de estudiante de Farmacia repasando el FIR"
             width={420}
             height={355}
             className="hidden w-[120px] shrink-0 md:block lg:w-[240px] xl:w-[320px]"
@@ -246,7 +246,7 @@ export default async function LandingPage() {
 
       <section id="beneficios" className="px-5 py-12 sm:py-16">
         <h2 className="text-center text-2xl font-extrabold text-ink">
-          Por qué estudiar con PIR Turel
+          Por qué estudiar con FIR Turel
         </h2>
         <div className="mx-auto mt-8 grid max-w-4xl gap-4 sm:grid-cols-3">
           {BENEFICIOS.map((b) => (
@@ -277,11 +277,11 @@ export default async function LandingPage() {
             También te puede interesar
           </p>
           <p className="mt-2 text-sm font-bold text-ink">
-            ¿Preparas el MIR de Medicina o el EIR de Enfermería, no el PIR de Psicología?
+            ¿Preparas el MIR de Medicina, el EIR de Enfermería o el PIR de Psicología, no el FIR de Farmacia?
           </p>
           <p className="mt-1 text-sm text-ink-muted">
             Tenemos proyectos hermanos con el mismo enfoque: preguntas oficiales
-            verificadas para los exámenes MIR y EIR.
+            verificadas para los exámenes MIR, EIR y PIR.
           </p>
           <div className="mt-3 flex justify-center gap-4">
             <a
@@ -299,6 +299,14 @@ export default async function LandingPage() {
               className="inline-block text-sm font-bold text-brand"
             >
               Visitar eir.turel.es →
+            </a>
+            <a
+              href="https://pir.turel.es"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block text-sm font-bold text-brand"
+            >
+              Visitar pir.turel.es →
             </a>
           </div>
         </div>

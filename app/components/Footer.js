@@ -15,7 +15,7 @@ export default function Footer() {
       </nav>
       <div className="mx-auto mt-6 max-w-4xl text-center">
         <p>
-          Fuentes: cuadernillos oficiales PIR 2021–2025,{" "}
+          Fuentes: cuadernillos oficiales FIR 2021–2025,{" "}
           <a
             href="https://www.sanidad.gob.es"
             rel="noopener noreferrer"
@@ -27,8 +27,8 @@ export default function Footer() {
           .
         </p>
         <p className="mt-2">
-          PIR Turel no está afiliado al Ministerio de Sanidad ni a ninguna academia de
-          preparación PIR.
+          FIR Turel no está afiliado al Ministerio de Sanidad ni a ninguna academia de
+          preparación FIR.
         </p>
       </div>
     </footer>

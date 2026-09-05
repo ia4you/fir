@@ -49,7 +49,7 @@ export default function DisclaimerBanner() {
     >
       <div className="mx-auto flex max-w-4xl items-center gap-3">
         <p className="flex-1 text-xs leading-snug text-ink-muted">
-          PIR Turel usa preguntas oficiales del Ministerio de Sanidad (dominio público). Las
+          FIR Turel usa preguntas oficiales del Ministerio de Sanidad (dominio público). Las
           explicaciones son generadas por IA y pueden contener errores — no sustituyen material
           oficial de preparación. Consulta nuestro aviso legal.
         </p>

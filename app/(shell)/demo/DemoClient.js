@@ -165,7 +165,7 @@ export default function DemoClient({ totalPreguntas }) {
           >
             <Image
               src={preguntaActual.imagen_path}
-              alt="Imagen clínica de la pregunta PIR"
+              alt="Imagen clínica de la pregunta FIR"
               width={600}
               height={400}
               className="h-auto w-full rounded-lg bg-panel object-contain"
@@ -398,7 +398,7 @@ export default function DemoClient({ totalPreguntas }) {
           <div className="absolute inset-6" onClick={(e) => e.stopPropagation()}>
             <Image
               src={preguntaActual.imagen_path}
-              alt="Imagen clínica de la pregunta PIR"
+              alt="Imagen clínica de la pregunta FIR"
               fill
               className="object-contain"
               sizes="100vw"

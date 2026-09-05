@@ -39,7 +39,7 @@ export default function EliminarCuenta() {
           Eliminar mi cuenta
         </h1>
         <p className="mt-3 text-ink-muted">
-          Introduce el email con el que te registraste en PIR Turel. Recibiremos tu solicitud y
+          Introduce el email con el que te registraste en FIR Turel. Recibiremos tu solicitud y
           eliminaremos tu cuenta, tu historial de tests y tus respuestas de forma permanente.
         </p>
 

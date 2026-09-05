@@ -3,7 +3,7 @@ import { getToken } from "next-auth/jwt";
 
 const EMAIL_ADMIN = "jose@turel.es";
 
-// Bloqueo temporal de todo el sitio mientras pir no está lanzado
+// Bloqueo temporal de todo el sitio mientras fir no está lanzado
 // públicamente. Activar/desactivar sin tocar código: variable de entorno
 // SITE_LOCKED=true en Dokploy. Quitar la variable (o ponerla a "false")
 // reabre el sitio al instante.
@@ -68,6 +68,6 @@ export const config = {
   matcher: [
     // Assets estáticos y endpoints públicos fuera del middleware: no
     // necesitan pasar por la comprobación de sesión.
-    "/((?!_next/static|_next/image|favicon.ico|imagenes-pir|api/webhooks/stripe|api/push/send).*)",
+    "/((?!_next/static|_next/image|favicon.ico|imagenes-fir|api/webhooks/stripe|api/push/send).*)",
   ],
 };

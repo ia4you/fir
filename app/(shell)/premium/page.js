@@ -55,8 +55,8 @@ export default function Premium() {
       <div className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-light text-3xl">
         ⭐
       </div>
-      <h1 className="mt-5 text-2xl font-extrabold text-ink">Plan Premium — PIR Turel</h1>
-      <p className="mt-2 text-ink-muted">Prepara el PIR sin límites</p>
+      <h1 className="mt-5 text-2xl font-extrabold text-ink">Plan Premium — FIR Turel</h1>
+      <p className="mt-2 text-ink-muted">Prepara el FIR sin límites</p>
 
       <div className="mt-6 w-full max-w-sm overflow-hidden rounded-2xl bg-card shadow-sm">
         <table className="w-full text-left text-sm">

@@ -189,7 +189,7 @@ export default function Registro() {
       {mostrarBienvenida && (
         <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/40 px-6">
           <div className="w-full max-w-sm rounded-2xl bg-card p-6 text-center shadow-lg">
-            <p className="text-xl font-extrabold text-ink">¡Bienvenido/a a PIR Turel! 🎉</p>
+            <p className="text-xl font-extrabold text-ink">¡Bienvenido/a a FIR Turel! 🎉</p>
             <p className="mt-2 font-semibold text-ink">Estás en el plan gratuito.</p>
 
             <ul className="mt-4 flex flex-col gap-2 text-left text-sm text-ink">

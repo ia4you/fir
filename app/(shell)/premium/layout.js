@@ -10,13 +10,13 @@ export async function generateMetadata() {
 
   const description =
     totalPreguntas > 0
-      ? `Accede a preguntas ilimitadas del examen PIR con el plan Premium de PIR Turel. Sin límite diario, acceso completo a las ${totalPreguntas.toLocaleString("es-ES")} preguntas oficiales.`
-      : "Accede a preguntas ilimitadas del examen PIR con el plan Premium de PIR Turel. Sin límite diario, acceso completo a todas las preguntas oficiales.";
+      ? `Accede a preguntas ilimitadas del examen FIR con el plan Premium de FIR Turel. Sin límite diario, acceso completo a las ${totalPreguntas.toLocaleString("es-ES")} preguntas oficiales.`
+      : "Accede a preguntas ilimitadas del examen FIR con el plan Premium de FIR Turel. Sin límite diario, acceso completo a todas las preguntas oficiales.";
 
   return {
-    title: "Plan Premium | PIR Turel",
+    title: "Plan Premium | FIR Turel",
     description,
-    alternates: { canonical: "https://pir.turel.es/premium" },
+    alternates: { canonical: "https://fir.turel.es/premium" },
   };
 }
 

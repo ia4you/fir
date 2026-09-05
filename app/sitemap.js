@@ -1,6 +1,6 @@
 import { query } from "@/lib/db";
 
-const BASE_URL = "https://pir.turel.es";
+const BASE_URL = "https://fir.turel.es";
 
 // El build de Dokploy no tiene acceso a mir-db; se genera en cada request
 // en vez de prerenderizarse en build time.

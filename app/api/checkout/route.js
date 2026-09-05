@@ -5,7 +5,7 @@ import { getStripe } from "@/lib/stripe";
 
 export const dynamic = "force-dynamic";
 
-const BASE_URL = "https://pir.turel.es";
+const BASE_URL = "https://fir.turel.es";
 
 export async function POST() {
   const session = await getServerSession(authOptions);

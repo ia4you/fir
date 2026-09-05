@@ -67,14 +67,14 @@ export async function POST(request) {
       await mailer.sendMail({
         from: process.env.SMTP_FROM,
         to: process.env.SMTP_TO,
-        subject: `Nuevo registro en PIR Turel — ${nombre}`,
+        subject: `Nuevo registro en FIR Turel — ${nombre}`,
         text: [
           `Nombre: ${nombre}`,
           `Email: ${email}`,
           `Fecha: ${rows[0].terminos_fecha.toISOString()}`,
           `Plan: free`,
           "",
-          "Ver en el panel: https://pir.turel.es/admin",
+          "Ver en el panel: https://fir.turel.es/admin",
         ].join("\n"),
       });
     } catch (err) {

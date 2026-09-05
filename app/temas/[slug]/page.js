@@ -21,14 +21,14 @@ export async function generateMetadata({ params }) {
   const tema = await getTemaDetallePorSlug(params.slug);
   if (!tema) return {};
 
-  const title = `${tema.tema} — Preguntas PIR | PIR Turel`;
+  const title = `${tema.tema} — Preguntas FIR | FIR Turel`;
   const description = resumirDescription(tema.intro);
 
   return {
     title,
     description,
-    alternates: { canonical: `https://pir.turel.es/temas/${tema.slug}` },
-    openGraph: { title, description, url: `https://pir.turel.es/temas/${tema.slug}` },
+    alternates: { canonical: `https://fir.turel.es/temas/${tema.slug}` },
+    openGraph: { title, description, url: `https://fir.turel.es/temas/${tema.slug}` },
   };
 }
 

@@ -14,6 +14,6 @@ export default function robots() {
         "/api",
       ],
     },
-    sitemap: "https://pir.turel.es/sitemap.xml",
+    sitemap: "https://fir.turel.es/sitemap.xml",
   };
 }

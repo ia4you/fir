@@ -8,7 +8,7 @@
 // usuarios que habían visitado /test antes de activarlo en Configuración).
 // La API nunca se cachea — los datos (preguntas, sesiones, estadísticas)
 // deben venir siempre frescos del servidor.
-const CACHE_NAME = "pir-turel-v1";
+const CACHE_NAME = "fir-turel-v1";
 
 self.addEventListener("install", () => {
   self.skipWaiting();
@@ -29,11 +29,11 @@ self.addEventListener("push", (event) => {
   try {
     datos = event.data.json();
   } catch {
-    datos = { title: "PIR Turel", body: event.data.text() };
+    datos = { title: "FIR Turel", body: event.data.text() };
   }
 
   event.waitUntil(
-    self.registration.showNotification(datos.title || "PIR Turel", {
+    self.registration.showNotification(datos.title || "FIR Turel", {
       body: datos.body,
       icon: "/icons/icon-192.png",
       badge: "/icons/icon-192.png",

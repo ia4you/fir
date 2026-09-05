@@ -16,9 +16,9 @@ function formatearFecha(iso) {
 }
 
 export const metadata = {
-  title: "Blog | PIR Turel",
-  description: "Artículos sobre preparación del examen PIR, preguntas oficiales y controversias documentadas.",
-  alternates: { canonical: "https://pir.turel.es/blog" },
+  title: "Blog | FIR Turel",
+  description: "Artículos sobre preparación del examen FIR, preguntas oficiales y controversias documentadas.",
+  alternates: { canonical: "https://fir.turel.es/blog" },
 };
 
 export default async function BlogIndex() {
@@ -33,7 +33,7 @@ export default async function BlogIndex() {
     <div className="min-h-screen bg-surface">
       <BlogHeader />
       <div className="mx-auto max-w-3xl px-5 py-10 sm:py-14">
-        <h1 className="text-3xl font-extrabold text-ink">Blog de PIR Turel</h1>
+        <h1 className="text-3xl font-extrabold text-ink">Blog de FIR Turel</h1>
         <p className="mt-2 text-ink-muted">
           Novedades de la plataforma, preparación del examen y preguntas oficiales.
         </p>

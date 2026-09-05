@@ -2,10 +2,10 @@ import Link from "next/link";
 import Footer from "../components/Footer";
 
 export const metadata = {
-  title: "Aviso Legal y Términos de Uso — PIR Turel",
+  title: "Aviso Legal y Términos de Uso — FIR Turel",
   description:
-    "Aviso legal de PIR Turel: titularidad del sitio, fuentes del banco de preguntas, tratamiento de las explicaciones generadas por IA y de las respuestas oficiales.",
-  alternates: { canonical: "https://pir.turel.es/aviso-legal" },
+    "Aviso legal de FIR Turel: titularidad del sitio, fuentes del banco de preguntas, tratamiento de las explicaciones generadas por IA y de las respuestas oficiales.",
+  alternates: { canonical: "https://fir.turel.es/aviso-legal" },
 };
 
 export default function AvisoLegalPage() {
@@ -17,14 +17,14 @@ export default function AvisoLegalPage() {
         </Link>
 
         <h1 className="mt-4 text-3xl font-extrabold leading-tight text-ink sm:text-4xl">
-          Aviso Legal y Términos de Uso — PIR Turel
+          Aviso Legal y Términos de Uso — FIR Turel
         </h1>
 
         <div className="mt-8 flex flex-col gap-8 text-ink-muted">
           <section>
             <h2 className="text-lg font-bold text-ink">Titular del sitio</h2>
             <p className="mt-2">
-              Este sitio web (pir.turel.es) está operado por José, en adelante &ldquo;PIR
+              Este sitio web (fir.turel.es) está operado por José, en adelante &ldquo;FIR
               Turel&rdquo;.
             </p>
           </section>
@@ -32,7 +32,7 @@ export default function AvisoLegalPage() {
           <section>
             <h2 className="text-lg font-bold text-ink">Fuentes del banco de preguntas</h2>
             <p className="mt-2">
-              Las preguntas de este banco proceden de los cuadernillos oficiales del examen PIR,
+              Las preguntas de este banco proceden de los cuadernillos oficiales del examen FIR,
               publicados por el{" "}
               <a
                 href="https://www.sanidad.gob.es"
@@ -55,17 +55,8 @@ export default function AvisoLegalPage() {
             <p className="mt-2">
               Las explicaciones incluidas han sido generadas mediante inteligencia artificial y
               pueden contener errores. No sustituyen el criterio clínico, los manuales oficiales
-              de preparación PIR ni las guías clínicas vigentes. PIR Turel no se hace
+              de preparación FIR ni las guías clínicas vigentes. FIR Turel no se hace
               responsable de decisiones tomadas basándose en el contenido de esta plataforma.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-bold text-ink">Imágenes</h2>
-            <p className="mt-2">
-              Las imágenes incluidas pertenecen a los cuadernillos oficiales del examen PIR
-              publicados por el Ministerio de Sanidad y se reproducen al amparo de su carácter
-              de documento público.
             </p>
           </section>
 

@@ -12,7 +12,7 @@ export default async function AdminLayout({ children }) {
       <header className="flex items-center justify-between gap-3 border-b border-track bg-card px-5 pt-safe pb-4">
         <div>
           <h1 className="text-xl font-extrabold text-ink">Panel de administración</h1>
-          <p className="text-sm text-ink-muted">PIR Turel</p>
+          <p className="text-sm text-ink-muted">FIR Turel</p>
         </div>
         <Link href="/inicio" className="flex-shrink-0 text-sm font-bold text-brand">
           ← Volver a la app

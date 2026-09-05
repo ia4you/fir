@@ -11,7 +11,7 @@ import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-const URL_WEBHOOK = "https://pir.turel.es/api/webhooks/stripe";
+const URL_WEBHOOK = "https://fir.turel.es/api/webhooks/stripe";
 const EVENTOS = [
   "checkout.session.completed",
   "customer.subscription.deleted",
@@ -32,7 +32,7 @@ async function main() {
   const webhook = await stripe.webhookEndpoints.create({
     url: URL_WEBHOOK,
     enabled_events: EVENTOS,
-    description: "PIR Turel — actualiza plan premium/free tras eventos de suscripción",
+    description: "FIR Turel — actualiza plan premium/free tras eventos de suscripción",
   });
 
   console.log(`Webhook creado: ${webhook.id}`);

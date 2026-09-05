@@ -10,13 +10,13 @@ export async function generateMetadata() {
 
   const description =
     totalPreguntas > 0
-      ? `Regístrate gratis en PIR Turel y empieza a practicar con ${totalPreguntas.toLocaleString("es-ES")} preguntas oficiales del examen PIR.`
-      : "Regístrate gratis en PIR Turel y empieza a practicar con preguntas oficiales del examen PIR de convocatorias anteriores.";
+      ? `Regístrate gratis en FIR Turel y empieza a practicar con ${totalPreguntas.toLocaleString("es-ES")} preguntas oficiales del examen FIR.`
+      : "Regístrate gratis en FIR Turel y empieza a practicar con preguntas oficiales del examen FIR de convocatorias anteriores.";
 
   return {
-    title: "Crear cuenta gratis | PIR Turel",
+    title: "Crear cuenta gratis | FIR Turel",
     description,
-    alternates: { canonical: "https://pir.turel.es/registro" },
+    alternates: { canonical: "https://fir.turel.es/registro" },
   };
 }
 

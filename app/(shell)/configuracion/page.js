@@ -103,7 +103,7 @@ export default function Configuracion() {
 
   async function empezarSimulacro() {
     if (!esPremium) {
-      setError("El simulacro PIR completo es una función premium.");
+      setError("El simulacro FIR completo es una función premium.");
       return;
     }
     setError("");
@@ -247,12 +247,12 @@ export default function Configuracion() {
               onClick={() => setModoTest("simulacro")}
               title={!esPremium ? "Función premium — hazte premium para desbloquearla" : undefined}
             >
-              {!esPremium && "🔒 "}Simulacro PIR
+              {!esPremium && "🔒 "}Simulacro FIR
             </Chip>
           </div>
           {!esPremium && (
             <p className="mt-3 text-xs text-ink-muted">
-              El simulacro PIR completo (examen real cronometrado) es una función premium.{" "}
+              El simulacro FIR completo (examen real cronometrado) es una función premium.{" "}
               <Link href="/premium" className="font-bold text-brand">
                 Hazte premium
               </Link>{" "}

@@ -8,7 +8,7 @@ import Link from "next/link";
 // contenido interior.
 //
 // La rama de resultado.controversia se pasa tal cual (JSX sin rediseñar):
-// en PIR no existe ninguna fuente de datos para ella (ni columna en
+// en FIR no existe ninguna fuente de datos para ella (ni columna en
 // preguntas ni tabla controversias), así que nunca se activa en producción,
 // pero se conserva por si se implementa como funcionalidad real más
 // adelante.
@@ -178,7 +178,7 @@ export default function TestFeedback({
             <div className="flex flex-col gap-3">
               <div className="rounded-xl border border-warning-border bg-warning-bg p-3 text-xs text-warning-text">
                 ⚠️ Las explicaciones de esta sección reflejan análisis clínico basado en
-                literatura médica. La respuesta válida en el examen PIR es siempre la de la
+                literatura médica. La respuesta válida en el examen FIR es siempre la de la
                 plantilla oficial del Ministerio de Sanidad.
               </div>
 
@@ -216,7 +216,7 @@ export default function TestFeedback({
                   🎯 Consejo para el examen
                 </p>
                 <p className="mt-1 text-sm text-ink-muted">
-                  En el PIR debes marcar la respuesta oficial aunque la evidencia clínica
+                  En el FIR debes marcar la respuesta oficial aunque la evidencia clínica
                   pueda apuntar a otra dirección.
                 </p>
               </div>

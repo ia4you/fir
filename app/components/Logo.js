@@ -1,8 +1,8 @@
 export default function Logo({ className = "h-10 w-auto" }) {
   return (
     <svg width="100%" viewBox="0 0 680 200" role="img" className={className}>
-      <title>Logo PIR Turel</title>
-      <desc>Logo de PIR Turel con icono médico y texto</desc>
+      <title>Logo FIR Turel</title>
+      <desc>Logo de FIR Turel con icono médico y texto</desc>
       <style>{`
         .logo-bg { fill: #0f766e; }
         .logo-pulse { fill: none; stroke: white; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
@@ -20,7 +20,7 @@ export default function Logo({ className = "h-10 w-auto" }) {
         className="logo-pulse"
         points="62,100 78,100 84,78 92,122 100,88 108,108 116,100 138,100"
       />
-      <text x="185" y="110" className="logo-title">PIR</text>
+      <text x="185" y="110" className="logo-title">FIR</text>
       <text x="185" y="145" className="logo-sub">TUREL</text>
       <line x1="185" y1="120" x2="340" y2="120" stroke="#0f766e" strokeWidth="0.5" opacity="0.3" />
     </svg>

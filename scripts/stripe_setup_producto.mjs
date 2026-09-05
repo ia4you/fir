@@ -1,6 +1,6 @@
 // stripe_setup_producto.mjs
 // -------------------------------
-// Crea el producto "PIR Turel Premium" y su precio recurrente de 9,99€/mes
+// Crea el producto "FIR Turel Premium" y su precio recurrente de 9,99€/mes
 // en Stripe (modo test o live según la clave usada). Idempotente: si ya
 // existe un producto con ese nombre activo, reutiliza el primero que
 // encuentre en vez de duplicarlo.
@@ -12,7 +12,7 @@ import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-const NOMBRE_PRODUCTO = "PIR Turel Premium";
+const NOMBRE_PRODUCTO = "FIR Turel Premium";
 
 async function main() {
   const existentes = await stripe.products.search({
@@ -25,7 +25,7 @@ async function main() {
   } else {
     producto = await stripe.products.create({
       name: NOMBRE_PRODUCTO,
-      description: "Preguntas PIR ilimitadas, simulacros completos y acceso sin límite diario.",
+      description: "Preguntas FIR ilimitadas, simulacros completos y acceso sin límite diario.",
     });
     console.log(`Producto creado: ${producto.id}`);
   }

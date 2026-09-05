@@ -44,13 +44,13 @@ export async function generateMetadata({ params }) {
   if (!post) return {};
   const imagen = imagenDePost(post);
   return {
-    title: `${post.titulo} | PIR Turel`,
+    title: `${post.titulo} | FIR Turel`,
     description: post.resumen || undefined,
-    alternates: { canonical: `https://pir.turel.es/blog/${params.slug}` },
+    alternates: { canonical: `https://fir.turel.es/blog/${params.slug}` },
     openGraph: {
       title: post.titulo,
       description: post.resumen || undefined,
-      url: `https://pir.turel.es/blog/${params.slug}`,
+      url: `https://fir.turel.es/blog/${params.slug}`,
       images: imagen ? [{ url: imagen }] : undefined,
     },
   };
@@ -67,8 +67,8 @@ export default async function BlogPost({ params }) {
   const imagenHero = post.imagen_portada;
   const textoCta =
     totalPreguntas > 0
-      ? `${totalPreguntas.toLocaleString("es-ES")} preguntas PIR oficiales verificadas.`
-      : "Preguntas PIR oficiales verificadas.";
+      ? `${totalPreguntas.toLocaleString("es-ES")} preguntas FIR oficiales verificadas.`
+      : "Preguntas FIR oficiales verificadas.";
 
   return (
     <div className="min-h-screen bg-surface">
@@ -102,7 +102,7 @@ export default async function BlogPost({ params }) {
           </div>
 
           <p className="mt-8 border-t border-track pt-6 text-sm text-ink-muted">
-            ¿Preparas el MIR o el EIR en vez del PIR? Visita{" "}
+            ¿Preparas el MIR, el EIR o el PIR en vez del FIR? Visita{" "}
             <a
               href="https://mir.turel.es"
               target="_blank"

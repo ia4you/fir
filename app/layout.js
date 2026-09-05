@@ -15,13 +15,13 @@ const inter = Inter({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://pir.turel.es"),
-  title: "PIR Turel",
-  description: "Practica el examen PIR con preguntas reales de convocatorias anteriores.",
+  metadataBase: new URL("https://fir.turel.es"),
+  title: "FIR Turel",
+  description: "Practica el examen FIR con preguntas reales de convocatorias anteriores.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
-    title: "PIR Turel",
+    title: "FIR Turel",
     statusBarStyle: "default",
   },
   icons: {

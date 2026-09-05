@@ -1,7 +1,7 @@
 --
--- Schema PIR Turel — basado en mir.turel.es (vía eir.turel.es)
+-- Schema FIR Turel — basado en pir.turel.es (vía eir.turel.es y mir.turel.es)
 -- Sin las tablas de auditoria cruzada (match_candidates, temp_estudio, temp_estudio_correctas)
--- Sin extension pg_trgm ni dblink (no se usa cruce de fuentes en PIR)
+-- Sin extension pg_trgm ni dblink (no se usa cruce de fuentes en FIR)
 --
 
 SET statement_timeout = 0;
