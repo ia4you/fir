@@ -35,7 +35,10 @@ CREATE TABLE public.preguntas (
     imagen_path text,
     tema text,
     explicacion_calidad text,
-    subtema text
+    subtema text,
+    tema_revisar boolean DEFAULT false NOT NULL,
+    tema_alternativo text,
+    tema_motivo text
 );
 
 CREATE SEQUENCE public.preguntas_id_seq
