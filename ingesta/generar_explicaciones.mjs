@@ -76,9 +76,24 @@ async function generarConGroq(userPrompt) {
   }
 }
 
+function esRepeticionDegenerada(texto) {
+  // Detecta el fallo conocido de los LLM de repetir la misma frase corta
+  // en bucle hasta agotar max_tokens (p.ej. "de la enzima de la enzima...").
+  // Frase de 1 a 5 palabras repetida 5+ veces seguidas = degenerado.
+  return /\b(\w+(?:\s+\w+){0,4})\b(?:\s+\1\b){4,}/i.test(texto);
+}
+
 async function procesarPregunta(p) {
   try {
-    const explicacion = await generarConGroq(construirPrompt(p));
+    let explicacion = await generarConGroq(construirPrompt(p));
+    let intentos = 1;
+    while (esRepeticionDegenerada(explicacion) && intentos < 3) {
+      intentos++;
+      explicacion = await generarConGroq(construirPrompt(p));
+    }
+    if (esRepeticionDegenerada(explicacion)) {
+      throw new Error("Respuesta degenerada (repeticion en bucle) tras 3 intentos");
+    }
     return { id: p.id, explicacion, error: null };
   } catch (err) {
     return { id: p.id, explicacion: null, error: err.message };
