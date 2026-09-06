@@ -89,7 +89,8 @@ async function main() {
   const { rows } = await pool.query(`
     SELECT id, año, numero, pregunta, opcion_a, opcion_b, opcion_c, opcion_d, opcion_e, correcta, tema
     FROM preguntas
-    WHERE explicacion IS NULL OR explicacion = ''
+    WHERE (explicacion IS NULL OR explicacion = '')
+      AND explicacion_calidad IS DISTINCT FROM 'sin_imagen'
     ORDER BY id
     ${LIMITE_PRUEBA ? `LIMIT ${LIMITE_PRUEBA}` : ""}
   `);

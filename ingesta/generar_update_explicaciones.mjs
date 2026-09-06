@@ -21,7 +21,9 @@ DECLARE
   sin_explicacion_antes int;
 BEGIN
   SELECT COUNT(*) INTO sin_explicacion_antes
-    FROM public.preguntas WHERE explicacion IS NULL OR explicacion = '';
+    FROM public.preguntas
+    WHERE (explicacion IS NULL OR explicacion = '')
+      AND explicacion_calidad IS DISTINCT FROM 'sin_imagen';
   IF sin_explicacion_antes != ${n} THEN
     RAISE EXCEPTION 'Se esperaban ${n} preguntas sin explicacion (segun el JSON), hay % -- abortando para no pisar filas con otro motivo.', sin_explicacion_antes;
   END IF;
@@ -43,7 +45,9 @@ DECLARE
   sin_explicacion_despues int;
 BEGIN
   SELECT COUNT(*) INTO sin_explicacion_despues
-    FROM public.preguntas WHERE explicacion IS NULL OR explicacion = '';
+    FROM public.preguntas
+    WHERE (explicacion IS NULL OR explicacion = '')
+      AND explicacion_calidad IS DISTINCT FROM 'sin_imagen';
   IF sin_explicacion_despues != 0 THEN
     RAISE EXCEPTION '% preguntas se quedaron sin explicacion -- abortando.', sin_explicacion_despues;
   END IF;
