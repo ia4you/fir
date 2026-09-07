@@ -1,0 +1,32 @@
+# FIR Turel
+
+> Plataforma de preparación para el examen FIR (Farmacéutico Interno Residente) en España
+> mediante análisis de preguntas oficiales.
+
+## Información del Proyecto
+- URL: https://fir.turel.es
+- Propósito: Ayudar a candidatos al FIR a preparar la oposición con 1033
+  preguntas de examen FIR oficiales (2021-2025) verificadas de los cuadernillos
+  del Ministerio de Sanidad, clasificadas en 66 subtemas agrupados en 11 áreas
+  de Farmacia.
+- Idioma: Español
+
+## Secciones Principales
+- [/]: Landing principal de acceso a la plataforma.
+- [/registro]: Alta gratuita para opositores.
+- [/login]: Inicio de sesión para usuarios registrados.
+- [/demo]: Prueba de demostración sin necesidad de registrarse.
+- [/temas]: Índice de temas del examen FIR, agrupados por área.
+- [/temas/{slug}]: Preguntas FIR organizadas por tema específico.
+- [/premium]: Información sobre el plan de pago de la plataforma.
+- [/contacto]: Formulario de contacto.
+- [/aviso-legal], [/privacidad]: Información legal y de privacidad.
+
+## Áreas
+Química Farmacéutica, Farmacología, Fisiopatología, Bioquímica, Microbiología, Farmacocinética, Análisis Clínicos, Tecnología Farmacéutica, Inmunología, Estadística y Salud Pública, Legislación Farmacéutica.
+
+## Contacto
+https://fir.turel.es/contacto
+
+## Analítica
+El sitio utiliza Google Analytics 4 (GA4) para analítica de uso.
