@@ -65,6 +65,18 @@ export default async function BlogPost({ params }) {
     getTotalPreguntas(),
   ]);
   const imagenHero = post.imagen_portada;
+  const schemaPost = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.titulo,
+    description: post.resumen || undefined,
+    image: imagenHero || undefined,
+    datePublished: post.created_at,
+    dateModified: post.created_at,
+    author: { "@type": "Organization", name: "FIR Turel" },
+    publisher: { "@type": "Organization", name: "FIR Turel", url: "https://fir.turel.es" },
+    mainEntityOfPage: { "@type": "WebPage", "@id": `https://fir.turel.es/blog/${params.slug}` },
+  };
   const textoCta =
     totalPreguntas > 0
       ? `${totalPreguntas.toLocaleString("es-ES")} preguntas FIR oficiales verificadas.`
@@ -73,6 +85,10 @@ export default async function BlogPost({ params }) {
   return (
     <div className="min-h-screen bg-surface">
       <BlogHeader />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaPost) }}
+      />
       <div className="mx-auto max-w-5xl px-5 py-8 sm:py-12 lg:grid lg:grid-cols-[1fr_300px] lg:items-start lg:gap-12">
         <article className="mx-auto w-full max-w-[700px] lg:mx-0">
           <Link href="/blog" className="text-sm font-bold text-brand">
