@@ -56,6 +56,8 @@ key.properties
 !/ingesta/update_*.sql
 !/ingesta/generar_explicaciones.mjs
 !/ingesta/generar_update_explicaciones.mjs
+!/ingesta/generar_update_explicaciones_vision.mjs
+!/ingesta/generar_update_explicacion_1039.mjs
 !/ingesta/package.json
 !/ingesta/package-lock.json
 
