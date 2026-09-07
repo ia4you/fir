@@ -38,7 +38,8 @@ CREATE TABLE public.preguntas (
     subtema text,
     tema_revisar boolean DEFAULT false NOT NULL,
     tema_alternativo text,
-    tema_motivo text
+    tema_motivo text,
+    area text
 );
 
 CREATE SEQUENCE public.preguntas_id_seq
