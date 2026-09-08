@@ -3,25 +3,19 @@ import { query } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-// Público sin sesión: la lista de temas ya está expuesta en /temas, esto
-// solo la sirve como JSON para el selector de /configuracion.
-//
-// Guarda defensiva: mientras no exista clasificación por tema para FIR
-// (tabla `temas` sin crear todavía, o creada pero vacía), esto debe
-// responder [] en vez de 500 — el selector de /configuracion debe poder
-// renderizarse igualmente, solo sin opciones de tema.
+// Público sin sesión: sirve las áreas generales (11) para el selector
+// "Tema" de /configuracion. Deliberadamente lee `preguntas.area`, no la
+// tabla `temas` (esa es la navegación SEO de /temas, con los 66 subtemas
+// finos, sin construir todavía en Fase 5) -- son dos granularidades
+// distintas para dos usos distintos.
 export async function GET() {
   try {
     const { rows } = await query(
-      `SELECT tema FROM temas ORDER BY num_preguntas DESC`
+      `SELECT DISTINCT area FROM preguntas WHERE area IS NOT NULL ORDER BY area`
     );
-    return NextResponse.json(rows.map((r) => r.tema));
+    return NextResponse.json(rows.map((r) => r.area));
   } catch (err) {
-    if (err.code === "42P01") {
-      // undefined_table: tabla `temas` todavía no existe para esta convocatoria.
-      return NextResponse.json([]);
-    }
     console.error(err);
-    return NextResponse.json({ error: "Error al cargar los temas" }, { status: 500 });
+    return NextResponse.json({ error: "Error al cargar las áreas" }, { status: 500 });
   }
 }

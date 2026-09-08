@@ -58,6 +58,9 @@ key.properties
 !/ingesta/generar_update_explicaciones.mjs
 !/ingesta/generar_update_explicaciones_vision.mjs
 !/ingesta/generar_update_explicacion_1039.mjs
+!/ingesta/generar_intros_temas_fir.mjs
+!/ingesta/generar_insert_temas_fir.mjs
+!/ingesta/crear_tabla_temas_fir.sql
 !/ingesta/package.json
 !/ingesta/package-lock.json
 

@@ -12,10 +12,13 @@ function esTablaInexistente(err) {
   return err.code === "42P01"; // undefined_table
 }
 
+// `area` no es columna propia de `temas` (solo slug/tema/intro/num_preguntas):
+// se deriva del prefijo de `tema` antes de ' - ', igual que preguntas.area,
+// para poder agrupar visualmente el índice sin tocar el esquema de `temas`.
 export async function getTemasIndice() {
   try {
     const { rows } = await query(
-      `SELECT slug, tema, num_preguntas
+      `SELECT slug, tema, num_preguntas, split_part(tema, ' - ', 1) AS area
        FROM temas
        ORDER BY num_preguntas DESC, tema ASC`
     );

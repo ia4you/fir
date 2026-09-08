@@ -128,6 +128,7 @@ export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const tema = searchParams.get("tema");
   const temasParam = searchParams.get("temas");
+  const area = searchParams.get("area");
   const anioParam = searchParams.get("anio");
   const cantidadParam = searchParams.get("cantidad");
   const idsParam = searchParams.get("ids");
@@ -203,6 +204,13 @@ export async function GET(request) {
   } else if (tema) {
     valores.push(tema);
     condiciones.push(`tema = $${valores.length}`);
+  }
+  // `area` filtra por una de las 11 áreas generales (selector "Tema" de
+  // /configuracion) -- granularidad distinta e independiente de
+  // `tema`/`temas` (los 66 subtemas finos, usados por "puntos débiles").
+  if (area) {
+    valores.push(area);
+    condiciones.push(`area = $${valores.length}`);
   }
   if (anio !== null) {
     valores.push(anio);
